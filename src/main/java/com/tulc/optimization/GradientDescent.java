@@ -1,8 +1,10 @@
 package com.tulc.optimization;
 
 import java.io.IOException;
-import java.util.Random;
 import java.util.Vector;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.tulc.math.Matrix;
 import com.tulc.math.MatrixUtils;
@@ -24,10 +26,10 @@ public class GradientDescent {
     private Integer numOfFeatures;
     private Double mse;
     private MatrixUtils<Double> matUtil;
+    private Logger logger;
     
-    public GradientDescent(
-    		Double iniTheeta, Matrix<Double> x, Vector<Double> y, 
-    		int numOfIter, Double mseGain) {
+    public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, int numOfIter, Double mseGain) {
+    	logger = LoggerFactory.getLogger(GradientDescent.class);
     	matUtil = new MatrixUtils<Double>();
     	theeta = new Vector<Double>();
         this.theeta.setSize(x.numOfCols());
@@ -43,10 +45,10 @@ public class GradientDescent {
         this.numOfFeatures = x.numOfCols();
         this.mse = (double) 0;
         
-        System.out.println("Parameters: " +
-                            "[# of rows: " + numOfRows + "], " + 
-                            "[# of features: " + numOfFeatures + "], " +
-                            "[initial theeta: " + iniTheeta + "], " 
+        logger.info("Parameters: " +
+                    "[# of rows: " + numOfRows + "], " + 
+                    "[# of features: " + numOfFeatures + "], " +
+                    "[initial theeta: " + iniTheeta + "], " 
             );
      }
     
@@ -66,25 +68,23 @@ public class GradientDescent {
             	gradient = sumOfElements(matUtil.multiply(x.transpose(), loss));
                 step = gradient * alpha/numOfRows;
                 newTheeta.set(m, (theeta.get(m) - step));
-                System.out.printf("\t" + 
-                                "feature[" + m + "]" + ", " + 
-                                "gradient: " + gradient + ", " + 
-                                "step: " + step + ", " +
-                                "newtheeta: " + newTheeta.get(m) + ", " +
-                                "oldtheeta: " + theeta.get(m) + ", " +
-                                "\n");
+                logger.debug("feature[" + m + "]" + ", " + 
+                            "gradient: " + gradient + ", " + 
+                            "step: " + step + ", " +
+                            "newtheeta: " + newTheeta.get(m) + ", " +
+                            "oldtheeta: " + theeta.get(m));
                 gradient = (double) 0;
             }
 
             theeta = newTheeta;
             if (i > 0) {
                 if ((mse - prevMse) < mseGain) {
-                    System.out.println("curr mse: " + mse + ", prev mse: " + prevMse + ", mse diff: " + (mse - prevMse) + ", cutoff: " + mseGain );
+                    logger.debug("curr mse: " + mse + ", prev mse: " + prevMse + 
+                    			 ", mse diff: " + (mse - prevMse) + ", cutoff: " + mseGain );
                     return;
                 }
             }
-            System.out.println((i+1) + "," + mse + ", prev mse: " + prevMse + ", mse diff: " + (mse - prevMse));
-            System.out.println(theeta);
+            logger.debug((i+1) + "," + mse + ", prev mse: " + prevMse + ", mse diff: " + (mse - prevMse));
             prevMse = mse;
             
         }
@@ -98,8 +98,8 @@ public class GradientDescent {
         Double currY = new Double(0);
         
         if (numOfFeatures != theeta.size()) {
-            System.out.println("# of features: " + numOfFeatures);
-            System.out.println("size of theeta: " + theeta.size());
+            logger.debug("# of features: " + numOfFeatures);
+            logger.debug("size of theeta: " + theeta.size());
             throw new IOException();
         }
         
