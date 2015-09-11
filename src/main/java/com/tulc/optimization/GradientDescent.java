@@ -28,6 +28,16 @@ public class GradientDescent {
     private MatrixUtils<Double> matUtil;
     private Logger logger;
     
+    /**
+     * Initializes the gradient descent
+     * 
+     * @param iniTheeta initial value of theeta
+     * @param x is the matrix that is to be optimized
+     * @param y is the response variable vector
+     * @param numOfIter is the number of iterations gradient descent is run
+     * @param mseGain stop condition if the difference between mean squared error (mse) of current and previous 
+     * iterations is less than this value
+     */
     public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, int numOfIter, Double mseGain) {
     	logger = LoggerFactory.getLogger(GradientDescent.class);
     	matUtil = new MatrixUtils<Double>();
