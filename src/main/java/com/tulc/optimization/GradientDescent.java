@@ -62,17 +62,19 @@ public class GradientDescent {
             );
      }
     
+    /**
+     * Run the gradient descrent algorithm till threshold conditions are satisfied
+     * @throws IOException
+     */
     public void run() throws IOException {
         Double gradient = new Double(0);
         Double alpha = 0.001;
         Vector<Double> newTheeta = new Vector<Double>();
-        Vector<Double> row = new Vector<Double>();
         Double prevMse = (double) 0;
         newTheeta = new Vector<Double>(numOfFeatures);
         Double step = (double) 0;
         
         for (int i=0; i<numOfIter; i++) {
-            System.out.println("iteration: " + (i+1));
             computeLossAndMse();
             for (int m=0; m<numOfFeatures; m++) {
             	gradient = sumOfElements(matUtil.multiply(x.transpose(), loss));
@@ -100,8 +102,13 @@ public class GradientDescent {
         }
     }
     
+    /**
+     * Compute loss and mean square error
+     * loss is a vector of differences between actual and predicted values for each record in training set
+     * @throws IOException
+     */
+    
     private void computeLossAndMse() throws IOException {
-        // return (theeta)T.X - y
         Double yhat = new Double(0);
         loss = new Vector<Double>(numOfRows);
 
@@ -123,6 +130,10 @@ public class GradientDescent {
         mse = mse/numOfRows;
     }
     
+    /**
+     * Returns the vector of theeta
+     * @return
+     */
     public Vector<Double> getTheeta() {
         return theeta;
     }
