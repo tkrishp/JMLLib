@@ -14,8 +14,6 @@ import com.tulc.math.MatrixUtils;
  * test more
  */
 public class GradientDescent {
-    public final Double INI_THEETA = 0.5;
-    
     private Vector<Double> theeta;
     private Vector<Double> y;
     private Matrix<Double> x;
@@ -43,7 +41,7 @@ public class GradientDescent {
     	matUtil = new MatrixUtils<Double>();
     	theeta = new Vector<Double>();
         this.theeta.setSize(x.numOfCols());
-        System.out.println("theeta size: " + this.theeta.size());
+        logger.info("theeta size: " + this.theeta.size());
         for (int i=0; i<this.theeta.size(); i++) {
             this.theeta.set(i, iniTheeta);
         }
@@ -66,7 +64,7 @@ public class GradientDescent {
      * Run the gradient descrent algorithm till threshold conditions are satisfied
      * @throws IOException
      */
-    public void run() throws IOException {
+    public Vector<Double> run() throws IOException {
         Double gradient = new Double(0);
         Double alpha = 0.001;
         Vector<Double> newTheeta = new Vector<Double>();
@@ -93,13 +91,15 @@ public class GradientDescent {
                 if ((mse - prevMse) < mseGain) {
                     logger.debug("curr mse: " + mse + ", prev mse: " + prevMse + 
                     			 ", mse diff: " + (mse - prevMse) + ", cutoff: " + mseGain );
-                    return;
+                    return getTheeta();
                 }
             }
             logger.debug((i+1) + "," + mse + ", prev mse: " + prevMse + ", mse diff: " + (mse - prevMse));
             prevMse = mse;
             
         }
+        
+        return getTheeta();
     }
     
     /**
@@ -122,9 +122,9 @@ public class GradientDescent {
         
         for (int n=0; n<numOfRows; n++) {
             Vector<Double> row = x.getRow(n);
-            yhat = matUtil.multiply(row, theeta);            
+            yhat = matUtil.multiply(row, theeta);
             currY = y.get(n);
-            loss.set(n, (yhat - currY));            
+            loss.set(n, (yhat - currY));
             mse += (yhat - currY) * (yhat - currY);
         }
         mse = mse/numOfRows;
