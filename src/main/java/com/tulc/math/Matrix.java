@@ -11,23 +11,25 @@ import java.util.Vector;
 public class Matrix<E extends Number> {
   protected int rows;
   protected int columns;
-  protected Vector<Vector<E>> x;
+  protected Vector<Vector<E>> matrix;
   
+  @SuppressWarnings("unchecked")
   public Matrix(int rows, int columns) {
     this.rows = rows;
     this.columns = columns;
-    
+    matrix = new Vector<Vector<E>>(rows);
+
     for (int i = 0; i < rows; i++) {
-      x.add(new Vector<E>(columns));
+    	matrix.add(new Vector<E>(columns));
     }
   }
-  
+    
   /**
    * Return number of rows in the matrix
    * @return
    */
   public int numOfRows() {
-    return x.size();
+    return matrix.size();
   }
   
   /**
@@ -35,7 +37,7 @@ public class Matrix<E extends Number> {
    * @return
    */
   public int numOfCols() {
-    return x.get(0).size();
+    return matrix.get(0).size();
   }
   
   /**
@@ -45,7 +47,7 @@ public class Matrix<E extends Number> {
    * @return
    */
   public Vector<E> getRow(int i) {
-    return (Vector<E>) x.get(i);
+    return (Vector<E>) matrix.get(i);
   }
   
   /**
@@ -56,7 +58,7 @@ public class Matrix<E extends Number> {
   public Vector<E> getColumn(int j) {
     Vector<E> column = new Vector<E>(rows);
     for(int i = 0; i < rows; i++) {
-      column.add(x.get(i).get(j));
+    	column.add(matrix.get(i).get(j));
     }
     return column;
   }
@@ -70,7 +72,7 @@ public class Matrix<E extends Number> {
    * @param j column index
    */
   public void insert(E e, int i, int j) {
-    x.get(i).set(j, e);
+	  matrix.get(i).add(j, e);
   }
   
   /**
@@ -81,7 +83,7 @@ public class Matrix<E extends Number> {
    * @return
    */
   public E get(int i, int j) {
-    return x.get(i).get(j);
+    return matrix.get(i).get(j);
   }
   
   /**
@@ -141,26 +143,28 @@ public class Matrix<E extends Number> {
    * @throws IOException
    */
   public Matrix<E> multiply(Matrix<E> in) throws IOException {
-    if (columns != in.numOfRows()) {
-      String err = "Error! cannot multiply. columns of LHS != rows of RHS";
-      throw new IOException(err);
-    }
+	  print();
+	  in.print();
+	  if (columns != in.numOfRows()) {
+		  String err = "Error! cannot multiply. columns of LHS != rows of RHS";
+		  throw new IOException(err);
+	  }
     
-    int outRows = rows;
-    int outCols = in.numOfCols();
-    Vector<E> row = new Vector<E>(columns);
-    Vector<E> column = new Vector<E>(in.numOfRows());
-    Matrix<E> out = new Matrix<E>(outRows, outCols);
+	  int outRows = rows;
+	  int outCols = in.numOfCols();
+	  Vector<E> row = new Vector<E>(columns);
+	  Vector<E> column = new Vector<E>(in.numOfRows());
+	  Matrix<E> out = new Matrix<E>(outRows, outCols);
 
-    for(int i=0; i<outRows; i++) {
-      row = getRow(i);
-      for (int j=0; j<outCols; j++) {
-        column = getColumn(j);
-        for(int k=0; k<row.size(); k++) {
-          out.insert(add(multiply(row.get(k), column.get(k)), out.get(i, j)), i, j);
-        }
-      }
-    }
+	  for(int i=0; i<outRows; i++) {
+		  row = getRow(i);
+		  for (int j=0; j<outCols; j++) {
+			  column = getColumn(j);
+			  for(int k=0; k<row.size(); k++) {
+				  out.insert(add(multiply(row.get(k), column.get(k)), out.get(i, j)), i, j);
+			  }
+		  }
+	  }
     
     return out;
   }
@@ -184,7 +188,7 @@ public class Matrix<E extends Number> {
    * @param in
    * @return
    */
-  public boolean equals(Matrix in) {
+  public boolean equals(Matrix<?> in) {
     if (rows != in.numOfRows()) return false;
     if (columns != in.numOfCols()) return false;
     
