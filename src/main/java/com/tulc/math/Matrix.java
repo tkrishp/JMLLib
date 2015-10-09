@@ -189,6 +189,28 @@ public class Matrix<E extends Number> {
   }
   
   /**
+   * Returns a subset of rows of given matrix
+   * @param rows Number of rows in the subset matrix
+   * @return
+   * @throws IOException
+   */
+  public Matrix<E> subsetRows(int rows) throws IOException {
+	  if (rows > this.rows)
+		  throw new IOException("Row index out of Matrix range");
+	  Matrix<E> subsetMatrix = new Matrix<E>(rows, this.columns);
+	  subsetMatrix = subset(rows, this.columns);
+	  return subsetMatrix;
+  }
+  
+  public Matrix<E> subsetColumns(int columns) throws IOException {
+	  if (columns > this.columns)
+		  throw new IOException("Column index out of Matrix range");
+	  Matrix<E> subsetMatrix = new Matrix<E>(this.rows, columns);
+	  subsetMatrix = subset(this.rows, columns);
+	  return subsetMatrix;
+  }
+  
+  /**
    * Return the matrix transpose
    * @return
    */
