@@ -202,6 +202,12 @@ public class Matrix<E extends Number> {
 	  return subsetMatrix;
   }
   
+  /**
+   * Returns a subset of columns of given matrix
+   * @param columns Number of columns in the subset matrix
+   * @return
+   * @throws IOException
+   */
   public Matrix<E> subsetColumns(int columns) throws IOException {
 	  if (columns > this.columns)
 		  throw new IOException("Column index out of Matrix range");
