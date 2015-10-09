@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.util.Vector;
 
 import com.tulc.math.Matrix;
+import com.tulc.optimization.GradientDescent;
 
 public class BaseModel {
 	@SuppressWarnings("rawtypes")
@@ -21,6 +22,8 @@ public class BaseModel {
 		this.y = y;
 		this.train_X = X;
 		this.train_y = y;
+		this.test_X = X;
+		this.test_y = y;
 	}
 	
 	public void split(Double trainRatio) throws IOException {
@@ -33,8 +36,12 @@ public class BaseModel {
 		
 	}
 	
-	public void train() {
-		
+	public void train() throws IOException {
+		GradientDescent gd = new GradientDescent(0.01, train_X, train_y, 1000000, 0.00001);
+		theeta = gd.optimize();
 	}
-
+	
+	public Vector getTheeta() {
+		return theeta;
+	}
 }
