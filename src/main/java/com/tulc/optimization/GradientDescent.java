@@ -64,7 +64,7 @@ public class GradientDescent {
      * Run the gradient descrent algorithm till threshold conditions are satisfied
      * @throws IOException
      */
-    public Vector<Double> run() throws IOException {
+    public Vector<Double> optimize() throws IOException {
         Double gradient = new Double(0);
         Double alpha = 0.001;
         Vector<Double> newTheeta = new Vector<Double>();
