@@ -170,49 +170,37 @@ public class Matrix<E extends Number> {
   }
   
   /**
-   * Returns the subset of given matrix
-   * @param rows Number of rows in the subset matrix
-   * @param columns Number of columns in the subset matrix
-   * @return subset matrix
+   * Returns a subset matrix
+   * @param rowStart Starting row position (1,2,3...,total_rows)
+   * @param rowEnd Ending row position
+   * @param colStart Starting column position (1,2,3...,total_columns)
+   * @param colEnd Ending column position
+   * @return
    * @throws IOException
    */
-  public Matrix<E> subset(int rows, int columns) throws IOException {
-	  if (rows > this.rows || columns > this.columns)
+  public Matrix<E> subset(int rowStart, int rowEnd, int colStart, int colEnd) throws IOException {
+	  if (rowEnd > this.rows || colEnd > this.columns)
 		  throw new IOException("Row or column index out of Matrix range");
-	  Matrix<E> subsetMatrix = new Matrix<E>(rows, columns);
-	  for(int i = 0; i < rows; i++) {
-		  for(int j = 0; j < columns; j++) {
+	  Matrix<E> subsetMatrix = new Matrix<E>((rowEnd - rowStart) + 1, (colEnd - colStart) + 1);
+	  for(int i = rowStart-1; i < rowEnd; i++) {
+		  for(int j = colStart-1; j < colEnd; j++) {
 			  subsetMatrix.insert(this.get(i, j), i, j);
 		  }
 	  }
 	  return subsetMatrix;
   }
   
-  /**
-   * Returns a subset of rows of given matrix
-   * @param rows Number of rows in the subset matrix
-   * @return
-   * @throws IOException
-   */
-  public Matrix<E> subsetRows(int rows) throws IOException {
-	  if (rows > this.rows)
+  public Matrix<E> subsetRows(int rowStart, int rowEnd) throws IOException {
+	  if (rowEnd > this.rows)
 		  throw new IOException("Row index out of Matrix range");
-	  Matrix<E> subsetMatrix = new Matrix<E>(rows, this.columns);
-	  subsetMatrix = subset(rows, this.columns);
+	  Matrix<E> subsetMatrix = subset(rowStart, rowEnd, 1, columns);
 	  return subsetMatrix;
   }
   
-  /**
-   * Returns a subset of columns of given matrix
-   * @param columns Number of columns in the subset matrix
-   * @return
-   * @throws IOException
-   */
-  public Matrix<E> subsetColumns(int columns) throws IOException {
-	  if (columns > this.columns)
+  public Matrix<E> subsetColumns(int colStart, int colEnd) throws IOException {
+	  if (colEnd > this.rows)
 		  throw new IOException("Column index out of Matrix range");
-	  Matrix<E> subsetMatrix = new Matrix<E>(this.rows, columns);
-	  subsetMatrix = subset(this.rows, columns);
+	  Matrix<E> subsetMatrix = subset(1, rows, colStart, colEnd);
 	  return subsetMatrix;
   }
   
