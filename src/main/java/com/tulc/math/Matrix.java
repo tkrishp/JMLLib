@@ -170,6 +170,25 @@ public class Matrix<E extends Number> {
   }
   
   /**
+   * Returns the subset of given matrix
+   * @param rows Number of rows in the subset matrix
+   * @param columns Number of columns in the subset matrix
+   * @return subset matrix
+   * @throws IOException
+   */
+  public Matrix<E> subset(int rows, int columns) throws IOException {
+	  if (rows > this.rows || columns > this.columns)
+		  throw new IOException("Row or column index out of Matrix range");
+	  Matrix<E> subsetMatrix = new Matrix<E>(rows, columns);
+	  for(int i = 0; i < rows; i++) {
+		  for(int j = 0; j < columns; j++) {
+			  subsetMatrix.insert(this.get(i, j), i, j);
+		  }
+	  }
+	  return subsetMatrix;
+  }
+  
+  /**
    * Return the matrix transpose
    * @return
    */
