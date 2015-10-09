@@ -7,6 +7,7 @@ import com.tulc.math.Matrix;
 
 public class LinearRegression extends BaseModel {
 
+	@SuppressWarnings("rawtypes")
 	public LinearRegression(Matrix X, Vector y) {
 		super(X, y);
 	}
