@@ -18,8 +18,8 @@ public class GradientDescent {
     private Vector<Double> y;
     private Matrix<Double> x;
     private Vector<Double> loss;
-    private int numOfIter;
-    private Double mseGain;
+    private int numOfIter = 0;
+    private Double mseGain = 0.0;
     private Integer numOfRows;
     private Integer numOfFeatures;
     private Double mse;
@@ -28,7 +28,6 @@ public class GradientDescent {
     private boolean checkMseGain;
     
     public GradientDescent() {
-    	
     }
     
     /**
@@ -40,10 +39,11 @@ public class GradientDescent {
      * @param numOfIter is the number of iterations gradient descent is run
      * @param mseGain stop condition if the difference between mean squared error (mse) of current and previous 
      * iterations is less than this value
+     * @throws IOException 
      */
-    public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, int numOfIter, Double mseGain) {
-    	matUtil = new MatrixUtils<Double>();
-    	theeta = new Vector<Double>();
+    public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, int numOfIter, Double mseGain) throws IOException {
+        matUtil = new MatrixUtils<Double>();
+        theeta = new Vector<Double>();
         this.theeta.setSize(x.numOfCols());
         for (int i=0; i<this.theeta.size(); i++) {
             this.theeta.set(i, iniTheeta);
@@ -58,15 +58,58 @@ public class GradientDescent {
         
         this.checkNumOfIter = true;
         this.checkMseGain = true;
+        
+        optimize();
      }
-    
-    
+
+    public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, Double mseGain) throws IOException {
+        matUtil = new MatrixUtils<Double>();
+        theeta = new Vector<Double>();
+        this.theeta.setSize(x.numOfCols());
+        for (int i=0; i<this.theeta.size(); i++) {
+            this.theeta.set(i, iniTheeta);
+        }
+        this.x = x;
+        this.y = y;
+        this.mseGain = mseGain;
+        this.numOfRows = x.numOfRows();
+        this.numOfFeatures = x.numOfCols();
+        this.mse = (double) 0;
+        
+        this.checkNumOfIter = false;
+        this.checkMseGain = true;
+        
+        optimize();
+     }
+
+    public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, int numOfIter) throws IOException {
+        matUtil = new MatrixUtils<Double>();
+        theeta = new Vector<Double>();
+        this.theeta.setSize(x.numOfCols());
+        for (int i=0; i<this.theeta.size(); i++) {
+            this.theeta.set(i, iniTheeta);
+        }
+        this.x = x;
+        this.y = y;
+        this.numOfIter = numOfIter;
+        this.numOfRows = x.numOfRows();
+        this.numOfFeatures = x.numOfCols();
+        this.mse = (double) 0;
+        
+        this.checkNumOfIter = true;
+        this.checkMseGain = false;
+        
+        optimize();
+     }
     
     /**
      * Run the gradient descrent algorithm till threshold conditions are satisfied
      * @throws IOException
      */
     public Vector<Double> optimize() throws IOException {
+        if (! (checkNumOfIter || checkMseGain))
+            throw new IOException("Gradient descent must have a defined exit condition. " +
+                    "Provide number of iterations or mse gain");
         Double gradient = new Double(0);
         Double alpha = 0.001;
         Vector<Double> newTheeta = new Vector<Double>();
@@ -78,7 +121,7 @@ public class GradientDescent {
         do {
             computeLossAndMse();
             for (int m=0; m<numOfFeatures; m++) {
-            	gradient = sumOfElements(matUtil.multiply(x.transpose(), loss));
+                gradient = sumOfElements(matUtil.multiply(x.transpose(), loss));
                 step = gradient * alpha/numOfRows;
                 newTheeta.set(m, (theeta.get(m) - step));
                 gradient = (double) 0;
@@ -94,7 +137,7 @@ public class GradientDescent {
             
         } while (
                 (checkNumOfIter ? (i++ < numOfIter) : true) && 
-                (checkMseGain ? ((mse - prevMse) < mseGain) : true)
+                (checkMseGain ? ((mse - prevMse) > mseGain) : true)
             );
         
         return getTheeta();
@@ -134,10 +177,10 @@ public class GradientDescent {
     }
     
     private Double sumOfElements(Vector<Double> a) {
-    	Double ret = (double) 0.0;
-    	for (int i = 0; i < a.size(); i++) {
-    		ret += a.get(i);
-    	}
-    	return ret;
+        Double ret = (double) 0.0;
+        for (int i = 0; i < a.size(); i++) {
+            ret += a.get(i);
+        }
+        return ret;
     }
 }
