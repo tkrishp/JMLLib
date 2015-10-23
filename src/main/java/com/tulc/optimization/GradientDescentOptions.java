@@ -1,15 +1,15 @@
 package com.tulc.optimization;
 
 public class GradientDescentOptions {
-    private Integer numOfIter;
-    private double mseGain;
+    private Integer numOfIter = -1;
+    private double mseGain = -1;
     private double alpha;
     
     public void setNumOfIter(Integer n) {
         numOfIter = n;
     }
     
-    public Integer numOfIter() {
+    public Integer getNumOfIter() {
         return numOfIter;
     }
     

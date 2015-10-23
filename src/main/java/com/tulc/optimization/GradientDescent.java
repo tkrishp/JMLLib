@@ -41,7 +41,8 @@ public class GradientDescent {
      * iterations is less than this value
      * @throws IOException 
      */
-    public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, int numOfIter, Double mseGain) throws IOException {
+    public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, GradientDescentOptions gdo) 
+            throws IOException {
         matUtil = new MatrixUtils<Double>();
         theeta = new Vector<Double>();
         this.theeta.setSize(x.numOfCols());
@@ -50,54 +51,14 @@ public class GradientDescent {
         }
         this.x = x;
         this.y = y;
-        this.numOfIter = numOfIter;
-        this.mseGain = mseGain;
+        this.numOfIter = gdo.getNumOfIter();
+        this.mseGain = gdo.getMseGain();
         this.numOfRows = x.numOfRows();
         this.numOfFeatures = x.numOfCols();
         this.mse = (double) 0;
         
-        this.checkNumOfIter = true;
-        this.checkMseGain = true;
-        
-        optimize();
-     }
-
-    public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, Double mseGain) throws IOException {
-        matUtil = new MatrixUtils<Double>();
-        theeta = new Vector<Double>();
-        this.theeta.setSize(x.numOfCols());
-        for (int i=0; i<this.theeta.size(); i++) {
-            this.theeta.set(i, iniTheeta);
-        }
-        this.x = x;
-        this.y = y;
-        this.mseGain = mseGain;
-        this.numOfRows = x.numOfRows();
-        this.numOfFeatures = x.numOfCols();
-        this.mse = (double) 0;
-        
-        this.checkNumOfIter = false;
-        this.checkMseGain = true;
-        
-        optimize();
-     }
-
-    public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, int numOfIter) throws IOException {
-        matUtil = new MatrixUtils<Double>();
-        theeta = new Vector<Double>();
-        this.theeta.setSize(x.numOfCols());
-        for (int i=0; i<this.theeta.size(); i++) {
-            this.theeta.set(i, iniTheeta);
-        }
-        this.x = x;
-        this.y = y;
-        this.numOfIter = numOfIter;
-        this.numOfRows = x.numOfRows();
-        this.numOfFeatures = x.numOfCols();
-        this.mse = (double) 0;
-        
-        this.checkNumOfIter = true;
-        this.checkMseGain = false;
+        this.checkNumOfIter = (numOfIter == -1) ? false : true;
+        this.checkMseGain = (mseGain == -1) ? false : true;
         
         optimize();
      }
