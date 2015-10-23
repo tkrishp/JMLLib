@@ -24,7 +24,8 @@ public class GradientDescent {
     private Integer numOfFeatures;
     private Double mse;
     private MatrixUtils<Double> matUtil;
-    private Logger logger;
+    private boolean checkNumOfIter;
+    private boolean checkMseGain;
     
     public GradientDescent() {
     	
@@ -41,11 +42,9 @@ public class GradientDescent {
      * iterations is less than this value
      */
     public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, int numOfIter, Double mseGain) {
-    	logger = LoggerFactory.getLogger(GradientDescent.class);
     	matUtil = new MatrixUtils<Double>();
     	theeta = new Vector<Double>();
         this.theeta.setSize(x.numOfCols());
-        logger.info("theeta size: " + this.theeta.size());
         for (int i=0; i<this.theeta.size(); i++) {
             this.theeta.set(i, iniTheeta);
         }
@@ -57,12 +56,11 @@ public class GradientDescent {
         this.numOfFeatures = x.numOfCols();
         this.mse = (double) 0;
         
-        logger.info("Parameters: " +
-                    "[# of rows: " + numOfRows + "], " + 
-                    "[# of features: " + numOfFeatures + "], " +
-                    "[initial theeta: " + iniTheeta + "], " 
-            );
+        this.checkNumOfIter = true;
+        this.checkMseGain = true;
      }
+    
+    
     
     /**
      * Run the gradient descrent algorithm till threshold conditions are satisfied
@@ -83,26 +81,21 @@ public class GradientDescent {
             	gradient = sumOfElements(matUtil.multiply(x.transpose(), loss));
                 step = gradient * alpha/numOfRows;
                 newTheeta.set(m, (theeta.get(m) - step));
-                logger.debug("feature[" + m + "]" + ", " + 
-                            "gradient: " + gradient + ", " + 
-                            "step: " + step + ", " +
-                            "newtheeta: " + newTheeta.get(m) + ", " +
-                            "oldtheeta: " + theeta.get(m));
                 gradient = (double) 0;
             }
 
             theeta = newTheeta;
             if (i > 0) {
                 if ((mse - prevMse) < mseGain) {
-                    logger.debug("curr mse: " + mse + ", prev mse: " + prevMse + 
-                    			 ", mse diff: " + (mse - prevMse) + ", cutoff: " + mseGain );
                     return getTheeta();
                 }
             }
-            logger.debug((i+1) + "," + mse + ", prev mse: " + prevMse + ", mse diff: " + (mse - prevMse));
             prevMse = mse;
             
-        } while (i++ < numOfIter && ((mse - prevMse) < mseGain));
+        } while (
+                (checkNumOfIter ? (i++ < numOfIter) : true) && 
+                (checkMseGain ? ((mse - prevMse) < mseGain) : true)
+            );
         
         return getTheeta();
     }
@@ -119,11 +112,8 @@ public class GradientDescent {
 
         Double currY = new Double(0);
         
-        if (numOfFeatures != theeta.size()) {
-            logger.debug("# of features: " + numOfFeatures);
-            logger.debug("size of theeta: " + theeta.size());
+        if (numOfFeatures != theeta.size())
             throw new IOException();
-        }
         
         for (int n=0; n<numOfRows; n++) {
             Vector<Double> row = x.getRow(n);
