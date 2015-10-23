@@ -7,6 +7,7 @@ import java.util.Vector;
 import com.tulc.math.Matrix;
 import com.tulc.math.MatrixUtils;
 import com.tulc.optimization.GradientDescent;
+import com.tulc.optimization.GradientDescentOptions;
 
 @SuppressWarnings("rawtypes")
 public class BaseModel {
@@ -38,8 +39,11 @@ public class BaseModel {
     }
     
     public void train() throws IOException {
-        GradientDescent gd = new GradientDescent(0.01, train_X, train_y, 1000000, 0.00001);
-        theeta = gd.optimize();
+        GradientDescentOptions gdo = new GradientDescentOptions();
+        gdo.setNumOfIter(1000000);
+        gdo.setMseGain(0.00001);
+        GradientDescent gd = new GradientDescent(0.01, train_X, train_y, gdo);
+        theeta = gd.getTheeta();
     }
     
     public Vector getTheeta() {
