@@ -5,10 +5,11 @@ import java.nio.file.Path;
 import java.util.Vector;
 
 import com.tulc.math.Matrix;
+import com.tulc.math.MatrixUtils;
 import com.tulc.optimization.GradientDescent;
 
+@SuppressWarnings("rawtypes")
 public class BaseModel {
-	@SuppressWarnings("rawtypes")
 	private Matrix X;
 	private Vector y;
 	private Vector theeta;
@@ -45,9 +46,14 @@ public class BaseModel {
 		return theeta;
 	}
 	
-	public Vector predict(Matrix X) {
-		Vector pred_Y = new Vector(X.numOfRows());
-		
+	public Vector predict(Matrix X) throws IOException {
+		Vector<Double> pred_Y = new Vector<Double>(X.numOfRows());
+		Vector row = new Vector();
+		MatrixUtils<Double> mu = new MatrixUtils();
+		for (int i = 0; i < X.numOfRows(); i++) {
+			row = X.getRow(i);
+			pred_Y.add(i, (Double) mu.multiply(pred_Y, theeta));
+		}
 		return pred_Y;
 	}
 }
