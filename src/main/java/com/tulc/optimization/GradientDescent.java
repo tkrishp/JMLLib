@@ -76,7 +76,8 @@ public class GradientDescent {
         newTheeta = new Vector<Double>(numOfFeatures);
         Double step = (double) 0;
         
-        for (int i=0; i<numOfIter; i++) {
+        int i = 0;
+        do {
             computeLossAndMse();
             for (int m=0; m<numOfFeatures; m++) {
             	gradient = sumOfElements(matUtil.multiply(x.transpose(), loss));
@@ -101,7 +102,7 @@ public class GradientDescent {
             logger.debug((i+1) + "," + mse + ", prev mse: " + prevMse + ", mse diff: " + (mse - prevMse));
             prevMse = mse;
             
-        }
+        } while (i++ < numOfIter && ((mse - prevMse) < mseGain));
         
         return getTheeta();
     }
