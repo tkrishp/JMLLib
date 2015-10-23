@@ -7,8 +7,8 @@ import com.tulc.math.Matrix;
 
 public class LogisiticRegression extends BaseModel {
 
-	public LogisiticRegression(Matrix X, Vector y) {
-		super(X, y);
-	}
+    public LogisiticRegression(Matrix X, Vector y) {
+        super(X, y);
+    }
 
 }

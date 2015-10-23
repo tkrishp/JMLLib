@@ -20,7 +20,7 @@ public class Matrix<E extends Number> {
     matrix = new Vector<Vector<E>>(rows);
 
     for (int i = 0; i < rows; i++) {
-    	matrix.add(new Vector<E>(columns));
+        matrix.add(new Vector<E>(columns));
     }
   }
     
@@ -58,7 +58,7 @@ public class Matrix<E extends Number> {
   public Vector<E> getColumn(int j) {
     Vector<E> column = new Vector<E>(rows);
     for(int i = 0; i < rows; i++) {
-    	column.add(matrix.get(i).get(j));
+        column.add(matrix.get(i).get(j));
     }
     return column;
   }
@@ -72,7 +72,7 @@ public class Matrix<E extends Number> {
    * @param j column index
    */
   public void insert(E e, int i, int j) {
-	  matrix.get(i).add(j, e);
+      matrix.get(i).add(j, e);
   }
   
   /**
@@ -143,28 +143,28 @@ public class Matrix<E extends Number> {
    * @throws IOException
    */
   public Matrix<E> multiply(Matrix<E> in) throws IOException {
-	  print();
-	  in.print();
-	  if (columns != in.numOfRows()) {
-		  String err = "Error! cannot multiply. columns of LHS != rows of RHS";
-		  throw new IOException(err);
-	  }
+      print();
+      in.print();
+      if (columns != in.numOfRows()) {
+          String err = "Error! cannot multiply. columns of LHS != rows of RHS";
+          throw new IOException(err);
+      }
     
-	  int outRows = rows;
-	  int outCols = in.numOfCols();
-	  Vector<E> row = new Vector<E>(columns);
-	  Vector<E> column = new Vector<E>(in.numOfRows());
-	  Matrix<E> out = new Matrix<E>(outRows, outCols);
+      int outRows = rows;
+      int outCols = in.numOfCols();
+      Vector<E> row = new Vector<E>(columns);
+      Vector<E> column = new Vector<E>(in.numOfRows());
+      Matrix<E> out = new Matrix<E>(outRows, outCols);
 
-	  for(int i=0; i<outRows; i++) {
-		  row = getRow(i);
-		  for (int j=0; j<outCols; j++) {
-			  column = getColumn(j);
-			  for(int k=0; k<row.size(); k++) {
-				  out.insert(add(multiply(row.get(k), column.get(k)), out.get(i, j)), i, j);
-			  }
-		  }
-	  }
+      for(int i=0; i<outRows; i++) {
+          row = getRow(i);
+          for (int j=0; j<outCols; j++) {
+              column = getColumn(j);
+              for(int k=0; k<row.size(); k++) {
+                  out.insert(add(multiply(row.get(k), column.get(k)), out.get(i, j)), i, j);
+              }
+          }
+      }
     
     return out;
   }
@@ -179,29 +179,29 @@ public class Matrix<E extends Number> {
    * @throws IOException
    */
   public Matrix<E> subset(int rowStart, int rowEnd, int colStart, int colEnd) throws IOException {
-	  if (rowEnd > this.rows || colEnd > this.columns)
-		  throw new IOException("Row or column index out of Matrix range");
-	  Matrix<E> subsetMatrix = new Matrix<E>((rowEnd - rowStart) + 1, (colEnd - colStart) + 1);
-	  for(int i = rowStart-1; i < rowEnd; i++) {
-		  for(int j = colStart-1; j < colEnd; j++) {
-			  subsetMatrix.insert(this.get(i, j), i, j);
-		  }
-	  }
-	  return subsetMatrix;
+      if (rowEnd > this.rows || colEnd > this.columns)
+          throw new IOException("Row or column index out of Matrix range");
+      Matrix<E> subsetMatrix = new Matrix<E>((rowEnd - rowStart) + 1, (colEnd - colStart) + 1);
+      for(int i = rowStart-1; i < rowEnd; i++) {
+          for(int j = colStart-1; j < colEnd; j++) {
+              subsetMatrix.insert(this.get(i, j), i, j);
+          }
+      }
+      return subsetMatrix;
   }
   
   public Matrix<E> subsetRows(int rowStart, int rowEnd) throws IOException {
-	  if (rowEnd > this.rows)
-		  throw new IOException("Row index out of Matrix range");
-	  Matrix<E> subsetMatrix = subset(rowStart, rowEnd, 1, columns);
-	  return subsetMatrix;
+      if (rowEnd > this.rows)
+          throw new IOException("Row index out of Matrix range");
+      Matrix<E> subsetMatrix = subset(rowStart, rowEnd, 1, columns);
+      return subsetMatrix;
   }
   
   public Matrix<E> subsetColumns(int colStart, int colEnd) throws IOException {
-	  if (colEnd > this.rows)
-		  throw new IOException("Column index out of Matrix range");
-	  Matrix<E> subsetMatrix = subset(1, rows, colStart, colEnd);
-	  return subsetMatrix;
+      if (colEnd > this.rows)
+          throw new IOException("Column index out of Matrix range");
+      Matrix<E> subsetMatrix = subset(1, rows, colStart, colEnd);
+      return subsetMatrix;
   }
   
   /**
