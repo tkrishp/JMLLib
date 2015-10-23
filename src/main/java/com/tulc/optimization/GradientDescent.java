@@ -26,6 +26,10 @@ public class GradientDescent {
     private MatrixUtils<Double> matUtil;
     private Logger logger;
     
+    public GradientDescent() {
+    	
+    }
+    
     /**
      * Initializes the gradient descent
      * 
