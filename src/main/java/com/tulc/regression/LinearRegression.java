@@ -11,5 +11,4 @@ public class LinearRegression extends BaseModel {
 	public LinearRegression(Matrix X, Vector y) {
 		super(X, y);
 	}
-
 }
