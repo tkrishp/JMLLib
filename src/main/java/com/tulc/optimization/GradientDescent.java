@@ -64,7 +64,7 @@ public class GradientDescent {
      }
     
     /**
-     * Run the gradient descrent algorithm till threshold conditions are satisfied
+     * Run the gradient descent algorithm till threshold conditions are satisfied
      * @throws IOException
      */
     public Vector<Double> optimize() throws IOException {
