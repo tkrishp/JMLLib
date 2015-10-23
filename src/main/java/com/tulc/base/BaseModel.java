@@ -44,4 +44,10 @@ public class BaseModel {
 	public Vector getTheeta() {
 		return theeta;
 	}
+	
+	public Vector predict(Matrix X) {
+		Vector pred_Y = new Vector(X.numOfRows());
+		
+		return pred_Y;
+	}
 }
