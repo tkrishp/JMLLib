@@ -13,7 +13,7 @@ public class MatrixUtils<E extends Number> {
         Matrix<E> m2 = new Matrix<E>(b.size(), 1);
         return m1.multiply(m2).get(0, 0);
     }
-    
+
     public Vector<E> multiply(Matrix<E> a, Vector<E> b) throws IOException {
         return a.multiply(new Matrix<E>(b.size(), 1)).getColumn(0);
     }
