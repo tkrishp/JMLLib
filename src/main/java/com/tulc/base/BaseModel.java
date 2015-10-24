@@ -10,14 +10,14 @@ import com.tulc.optimization.GradientDescent;
 import com.tulc.optimization.GradientDescentOptions;
 
 @SuppressWarnings("rawtypes")
-public class BaseModel {
+public class BaseModel<E extends Number> {
     private Matrix X;
     private Vector y;
     private Vector theeta;
-    private Matrix train_X;
-    private Matrix test_X;
-    private Vector train_y;
-    private Vector test_y;
+    private Matrix<E> train_X;
+    private Matrix<E> test_X;
+    private Vector<E> train_y;
+    private Vector<E> test_y;
     
     public BaseModel(Matrix X, Vector y) {
         this.X = X;
@@ -28,6 +28,7 @@ public class BaseModel {
         this.test_y = y;
     }
     
+    @SuppressWarnings("unchecked")
     public void split(Double trainRatio) throws IOException {
         int splitPoint = (int) (X.numOfRows() * trainRatio);
         train_X = X.subsetRows(1, splitPoint);
@@ -52,10 +53,8 @@ public class BaseModel {
     
     public Vector predict(Matrix X) throws IOException {
         Vector<Double> pred_Y = new Vector<Double>(X.numOfRows());
-        Vector row = new Vector();
-        MatrixUtils<Double> mu = new MatrixUtils();
+        MatrixUtils<Double> mu = new MatrixUtils<Double>();
         for (int i = 0; i < X.numOfRows(); i++) {
-            row = X.getRow(i);
             pred_Y.add(i, (Double) mu.multiply(pred_Y, theeta));
         }
         return pred_Y;

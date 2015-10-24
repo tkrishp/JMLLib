@@ -13,7 +13,7 @@ import com.tulc.math.MatrixUtils;
  * Class that implements GradientDescent
  * test more
  */
-public class GradientDescent {
+public class GradientDescent<E extends Number> {
     private Vector<Double> theeta;
     private Vector<Double> y;
     private Matrix<Double> x;
@@ -41,7 +41,8 @@ public class GradientDescent {
      * iterations is less than this value
      * @throws IOException 
      */
-    public GradientDescent(Double iniTheeta, Matrix<Double> x, Vector<Double> y, GradientDescentOptions gdo) 
+    @SuppressWarnings("unchecked")
+    public GradientDescent(Double iniTheeta, Matrix<E> x, Vector<E> y, GradientDescentOptions gdo) 
             throws IOException {
         matUtil = new MatrixUtils<Double>();
         theeta = new Vector<Double>();
@@ -49,8 +50,8 @@ public class GradientDescent {
         for (int i=0; i<this.theeta.size(); i++) {
             this.theeta.set(i, iniTheeta);
         }
-        this.x = x;
-        this.y = y;
+        this.x = (Matrix<Double>) x;
+        this.y = (Vector<Double>) y;
         this.numOfIter = gdo.getNumOfIter();
         this.mseGain = gdo.getMseGain();
         this.numOfRows = x.numOfRows();
@@ -62,7 +63,7 @@ public class GradientDescent {
         
         optimize();
      }
-    
+
     /**
      * Run the gradient descent algorithm till threshold conditions are satisfied
      * @throws IOException
