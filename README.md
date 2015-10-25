@@ -1,4 +1,4 @@
-# JMLLib (Java Machine Learning Library
+# JMLLib (Java Machine Learning Library)
 A Java library for building supervised learning models - regression & classification. This library is currently in progress and will support following models
 
 1. Linear Regression
