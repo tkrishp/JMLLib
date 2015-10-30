@@ -22,7 +22,6 @@ public class SGD <E extends Number> extends GradientDescent<E> {
                 super.y = yValue;
                 optimize();
             }
-
         }
     }
 }

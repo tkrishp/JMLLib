@@ -32,7 +32,7 @@ public class GradientDescent<E extends Number> {
     }
     
     /**
-     * Initializes the gradient descent
+     * Initializes gradient descent algorithm with input parameters
      * 
      * @param iniTheeta initial value of theeta
      * @param x is the matrix that is to be optimized
@@ -118,7 +118,7 @@ public class GradientDescent<E extends Number> {
         Double currY = new Double(0);
         
         if (numOfFeatures != theeta.size())
-            throw new IOException();
+            throw new IOException("Invalid dimensions for the vector theeta");
         
         for (int n=0; n<numOfRows; n++) {
             row = X.getRow(n);
