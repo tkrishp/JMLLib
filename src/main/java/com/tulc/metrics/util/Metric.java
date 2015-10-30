@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 public class Metric {
-    public static double MSE(Vector yActual, Vector yPred) throws IOException {
+    public static double MSE(Vector<Double> yActual, Vector<Double> yPred) throws IOException {
         double mse = 0.0;
         Vector<Double> ya = yActual;
         Vector<Double> yp = yPred;
@@ -18,7 +18,7 @@ public class Metric {
         return (mse/ya.size());
     }
     
-    public static double RMSE(Vector yActual, Vector yPred) throws IOException {
+    public static double RMSE(Vector<Double> yActual, Vector<Double> yPred) throws IOException {
         return Math.sqrt(MSE(yActual, yPred));
     }
 }
