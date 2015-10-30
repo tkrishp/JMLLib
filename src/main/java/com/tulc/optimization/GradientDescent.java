@@ -111,8 +111,6 @@ public class GradientDescent<E extends Number> {
      * loss is a vector of differences between actual and predicted values for each record in training set
      * @throws IOException
      */
-    
-    @SuppressWarnings("unchecked")
     private void computeLossAndMse() throws IOException {
         Double yhat = new Double(0);
         loss = new Vector<Double>(numOfRows);
