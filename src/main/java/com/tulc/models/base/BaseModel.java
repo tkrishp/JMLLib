@@ -1,4 +1,4 @@
-package com.tulc.base;
+package com.tulc.models.base;
 
 import java.io.IOException;
 import java.nio.file.Path;

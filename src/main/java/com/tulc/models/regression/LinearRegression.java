@@ -1,8 +1,8 @@
-package com.tulc.regression;
+package com.tulc.models.regression;
 
 import java.util.Vector;
 
-import com.tulc.base.BaseModel;
+import com.tulc.models.base.BaseModel;
 import com.tulc.math.Matrix;
 
 public class LinearRegression extends BaseModel {
