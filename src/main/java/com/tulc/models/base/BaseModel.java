@@ -51,7 +51,7 @@ public class BaseModel<E extends Number> {
         return theeta;
     }
     
-    public Vector predict(Matrix X) throws IOException {
+    public Vector predict(Matrix<E> X) throws IOException {
         Vector<Double> pred_Y = new Vector<Double>(X.numOfRows());
         MatrixUtils<Double> mu = new MatrixUtils<Double>();
         for (int i = 0; i < X.numOfRows(); i++) {

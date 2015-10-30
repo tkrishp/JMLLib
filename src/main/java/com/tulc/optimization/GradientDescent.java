@@ -25,6 +25,9 @@ public class GradientDescent<E extends Number> {
     private boolean checkNumOfIter;
     private boolean checkMseGain;
     
+    /*
+     * For use by derived classes
+     */
     public GradientDescent() {
     }
     
