@@ -5,7 +5,7 @@ import java.util.Vector;
 import com.tulc.models.base.BaseModel;
 import com.tulc.math.Matrix;
 
-public class LinearRegression extends BaseModel {
+public class LinearRegression<E extends Number> extends BaseModel<E> {
 
     @SuppressWarnings("rawtypes")
     public LinearRegression(Matrix X, Vector y) {

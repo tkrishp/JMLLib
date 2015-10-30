@@ -13,13 +13,13 @@ import com.tulc.optimization.GradientDescentOptions;
 public class BaseModel<E extends Number> {
     private Matrix X;
     private Vector y;
-    private Vector theeta;
+    private Vector<Double> theeta;
     private Matrix<E> train_X;
     private Matrix<E> test_X;
     private Vector<E> train_y;
     private Vector<E> test_y;
     
-    public BaseModel(Matrix X, Vector y) {
+    public BaseModel(Matrix<E> X, Vector<E> y) {
         this.X = X;
         this.y = y;
         this.train_X = X;
@@ -43,11 +43,11 @@ public class BaseModel<E extends Number> {
         GradientDescentOptions gdo = new GradientDescentOptions();
         gdo.setNumOfIter(1000000);
         gdo.setMseGain(0.00001);
-        GradientDescent gd = new GradientDescent(0.01, train_X, train_y, gdo);
+        GradientDescent<E> gd = new GradientDescent<E>(0.01, train_X, train_y, gdo);
         theeta = gd.getTheeta();
     }
     
-    public Vector getTheeta() {
+    public Vector<Double> getTheeta() {
         return theeta;
     }
     
