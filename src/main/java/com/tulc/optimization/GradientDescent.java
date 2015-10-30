@@ -12,18 +12,18 @@ import com.tulc.math.MatrixUtils;
  * test more
  */
 public class GradientDescent<E extends Number> {
-    private Vector<E> theeta;
-    private Vector<E> y;
-    private Matrix<E> x;
-    private Vector<Double> loss;
-    private int numOfIter = 0;
-    private Double mseGain = 0.0;
-    private Integer numOfRows;
-    private Integer numOfFeatures;
-    private Double mse;
-    private MatrixUtils<E> matUtil;
-    private boolean checkNumOfIter;
-    private boolean checkMseGain;
+    protected Vector<E> theeta;
+    protected Vector<E> y;
+    protected Matrix<E> x;
+    protected Vector<Double> loss;
+    protected int numOfIter = 0;
+    protected Double mseGain = 0.0;
+    protected Integer numOfRows;
+    protected Integer numOfFeatures;
+    protected Double mse;
+    protected MatrixUtils<E> matUtil;
+    protected boolean checkNumOfIter;
+    protected boolean checkMseGain;
     
     /*
      * For use by derived classes
