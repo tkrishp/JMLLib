@@ -14,7 +14,7 @@ import com.tulc.math.MatrixUtils;
 public class GradientDescent<E extends Number> {
     protected Vector<E> theeta;
     protected Vector<E> y;
-    protected Matrix<E> x;
+    protected Matrix<E> X;
     protected Vector<Double> loss;
     protected int numOfIter = 0;
     protected Double mseGain = 0.0;
@@ -43,20 +43,20 @@ public class GradientDescent<E extends Number> {
      * @throws IOException 
      */
     @SuppressWarnings("unchecked")
-    public GradientDescent(Double iniTheeta, Matrix<E> x, Vector<E> y, GradientDescentOptions gdo) 
+    public GradientDescent(Double iniTheeta, Matrix<E> X, Vector<E> y, GradientDescentOptions gdo) 
             throws IOException {
         matUtil = new MatrixUtils<E>();
         theeta = new Vector<E>();
-        this.theeta.setSize(x.numOfCols());
+        this.theeta.setSize(X.numOfCols());
         for (int i=0; i<this.theeta.size(); i++) {
             this.theeta.set(i, (E) iniTheeta);
         }
-        this.x = x;
+        this.X = X;
         this.y = y;
         this.numOfIter = gdo.getNumOfIter();
         this.mseGain = gdo.getMseGain();
-        this.numOfRows = x.numOfRows();
-        this.numOfFeatures = x.numOfCols();
+        this.numOfRows = X.numOfRows();
+        this.numOfFeatures = X.numOfCols();
         this.mse = (double) 0;
         
         this.checkNumOfIter = (numOfIter == -1) ? false : true;
@@ -84,7 +84,7 @@ public class GradientDescent<E extends Number> {
         do {
             computeLossAndMse();
             for (int m=0; m<numOfFeatures; m++) {
-                gradient = (Double) sumOfElements(matUtil.multiply(x.transpose(), (Vector<E>)loss));
+                gradient = (Double) sumOfElements(matUtil.multiply(X.transpose(), (Vector<E>)loss));
                 step = (Double) GenericTypeOp.multiply(gradient, alpha)/numOfRows;
                 newTheeta.set(m, (E) GenericTypeOp.subtract(theeta.get(m), step));
                 gradient = 0.0;
@@ -123,7 +123,7 @@ public class GradientDescent<E extends Number> {
             throw new IOException();
         
         for (int n=0; n<numOfRows; n++) {
-            row = x.getRow(n);
+            row = X.getRow(n);
             yhat = (Double) matUtil.multiply(row, theeta);
             currY = (Double) y.get(n);
             loss.set(n, (yhat - currY));
