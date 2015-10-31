@@ -42,7 +42,6 @@ public class GradientDescent<E extends Number, F extends Number> {
      * iterations is less than this value
      * @throws IOException 
      */
-    @SuppressWarnings("unchecked")
     public GradientDescent(Double iniTheeta, Matrix<E> X, Vector<F> y, GradientDescentOptions gdo) 
             throws IOException {
         matUtil = new MatrixUtils<E>();
