@@ -10,16 +10,16 @@ import com.tulc.optimization.GradientDescent;
 import com.tulc.optimization.GradientDescentOptions;
 
 @SuppressWarnings("rawtypes")
-public class BaseModel<E extends Number> {
+public class BaseModel<E extends Number, F extends Number> {
     private Matrix X;
     private Vector y;
     private Vector<Double> theeta;
     private Matrix<E> train_X;
     private Matrix<E> test_X;
-    private Vector<E> train_y;
-    private Vector<E> test_y;
+    private Vector<F> train_y;
+    private Vector<F> test_y;
     
-    public BaseModel(Matrix<E> X, Vector<E> y) {
+    public BaseModel(Matrix<E> X, Vector<F> y) {
         this.X = X;
         this.y = y;
         this.train_X = X;
