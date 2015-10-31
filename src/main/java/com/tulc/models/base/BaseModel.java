@@ -43,7 +43,7 @@ public class BaseModel<E extends Number, F extends Number> {
         GradientDescentOptions gdo = new GradientDescentOptions();
         gdo.setNumOfIter(1000000);
         gdo.setMseGain(0.00001);
-        GradientDescent<E> gd = new GradientDescent<E>(0.01, train_X, train_y, gdo);
+        GradientDescent<E, F> gd = new GradientDescent<E, F>(0.01, train_X, train_y, gdo);
         theeta = gd.getTheeta();
     }
     
