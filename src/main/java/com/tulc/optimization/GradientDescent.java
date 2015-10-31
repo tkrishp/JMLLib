@@ -11,9 +11,9 @@ import com.tulc.math.MatrixUtils;
  * Class that implements GradientDescent
  * test more
  */
-public class GradientDescent<E extends Number> {
-    protected Vector<E> theeta;
-    protected Vector<E> y;
+public class GradientDescent<E extends Number, F extends Number> {
+    protected Vector<Double> theeta;
+    protected Vector<F> y;
     protected Matrix<E> X;
     protected Vector<Double> loss;
     protected int numOfIter = 0;
@@ -43,13 +43,13 @@ public class GradientDescent<E extends Number> {
      * @throws IOException 
      */
     @SuppressWarnings("unchecked")
-    public GradientDescent(Double iniTheeta, Matrix<E> X, Vector<E> y, GradientDescentOptions gdo) 
+    public GradientDescent(Double iniTheeta, Matrix<E> X, Vector<F> y, GradientDescentOptions gdo) 
             throws IOException {
         matUtil = new MatrixUtils<E>();
-        theeta = new Vector<E>();
+        theeta = new Vector<Double>();
         this.theeta.setSize(X.numOfCols());
         for (int i=0; i<this.theeta.size(); i++) {
-            this.theeta.set(i, (E) iniTheeta);
+            this.theeta.set(i, iniTheeta);
         }
         this.X = X;
         this.y = y;
@@ -77,7 +77,7 @@ public class GradientDescent<E extends Number> {
         Double gradient = new Double(0);
         Double alpha = 0.001;
         Double prevMse = (double) 0;
-        Vector<E> newTheeta = new Vector<E>(numOfFeatures);
+        Vector<Double> newTheeta = new Vector<Double>(numOfFeatures);
         Double step = (double) 0;
         
         int i = 0;
