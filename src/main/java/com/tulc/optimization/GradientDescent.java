@@ -134,7 +134,6 @@ public class GradientDescent<E extends Number, F extends Number> {
      * Returns the vector of theeta
      * @return
      */
-    @SuppressWarnings("unchecked")
     public Vector<Double> getTheeta() {
         return (Vector<Double>) theeta;
     }
