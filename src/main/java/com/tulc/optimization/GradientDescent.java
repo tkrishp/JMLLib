@@ -86,7 +86,7 @@ public class GradientDescent<E extends Number, F extends Number> {
             for (int m=0; m<numOfFeatures; m++) {
                 gradient = (Double) sumOfElements(matUtil.multiply(X.transpose(), (Vector<E>)loss));
                 step = (Double) GenericTypeOp.multiply(gradient, alpha)/numOfRows;
-                newTheeta.set(m, (E) GenericTypeOp.subtract(theeta.get(m), step));
+                newTheeta.set(m, GenericTypeOp.subtract(theeta.get(m), step));
                 gradient = 0.0;
             }
 

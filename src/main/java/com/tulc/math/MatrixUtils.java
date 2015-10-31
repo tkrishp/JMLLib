@@ -8,7 +8,7 @@ public class MatrixUtils<E extends Number> {
         return a.multiply(b);
     }
     
-    public E multiply(Vector<E> a, Vector<E> b) throws IOException {
+    public E multiply(Vector<E> a, Vector<Double> b) throws IOException {
         Matrix<E> m1 = new Matrix<E>(1, a.size());
         Matrix<E> m2 = new Matrix<E>(b.size(), 1);
         return m1.multiply(m2).get(0, 0);
