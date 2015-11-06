@@ -1,7 +1,6 @@
 package com.tulc.models.base;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Vector;
 
 import com.tulc.math.Matrix;
@@ -10,16 +9,16 @@ import com.tulc.optimization.GradientDescent;
 import com.tulc.optimization.GradientDescentOptions;
 
 @SuppressWarnings("rawtypes")
-public class BaseModel<E extends Number, F extends Number> {
+public class BaseModel {
     protected Matrix X;
     protected Vector y;
     protected Vector<Double> theeta;
-    protected Matrix<E> train_X;
-    protected Matrix<E> test_X;
-    protected Vector<F> train_y;
-    protected Vector<F> test_y;
+    protected Matrix train_X;
+    protected Matrix test_X;
+    protected Vector<Double> train_y;
+    protected Vector<Double> test_y;
     
-    public BaseModel(Matrix<E> X, Vector<F> y) {
+    public BaseModel(Matrix X, Vector<Double> y) {
         this.X = X;
         this.y = y;
         this.train_X = X;
@@ -43,7 +42,7 @@ public class BaseModel<E extends Number, F extends Number> {
         GradientDescentOptions gdo = new GradientDescentOptions();
         gdo.setNumOfIter(1000000);
         gdo.setMseGain(0.00001);
-        GradientDescent<E, F> gd = new GradientDescent<E, F>(0.01, train_X, train_y, gdo);
+        GradientDescent gd = new GradientDescent(0.01, train_X, train_y, gdo);
         theeta = gd.getTheeta();
         return theeta;
     }
@@ -52,11 +51,11 @@ public class BaseModel<E extends Number, F extends Number> {
         return theeta;
     }
     
-    public Vector predict(Matrix<E> X) throws IOException {
+    public Vector predict(Matrix X) throws IOException {
         Vector<Double> pred_Y = new Vector<Double>(X.numOfRows());
-        MatrixUtils<Double> mu = new MatrixUtils<Double>();
-        for (int i = 0; i < X.numOfRows(); i++) {
-            pred_Y.add(i, (Double) mu.multiply(pred_Y, theeta));
+        MatrixUtils mu = new MatrixUtils();
+        for(int i = 0; i < X.numOfRows(); i++) {
+            pred_Y.add(i, mu.dotProduct(X.getRow(i), theeta));
         }
         return pred_Y;
     }

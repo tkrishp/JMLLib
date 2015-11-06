@@ -11,17 +11,17 @@ import com.tulc.math.MatrixUtils;
  * Class that implements GradientDescent
  * test more
  */
-public class GradientDescent<E extends Number, F extends Number> {
+public class GradientDescent {
     protected Vector<Double> theeta;
-    protected Vector<F> y;
-    protected Matrix<E> X;
+    protected Vector<Double> y;
+    protected Matrix X;
     protected Vector<Double> loss;
     protected int numOfIter = 0;
     protected Double mseGain = 0.0;
     protected Integer numOfRows;
     protected Integer numOfFeatures;
     protected Double mse;
-    protected MatrixUtils<E> matUtil;
+    protected MatrixUtils matUtil;
     protected boolean checkNumOfIter;
     protected boolean checkMseGain;
     
@@ -42,9 +42,9 @@ public class GradientDescent<E extends Number, F extends Number> {
      * iterations is less than this value
      * @throws IOException 
      */
-    public GradientDescent(Double iniTheeta, Matrix<E> X, Vector<F> y, GradientDescentOptions gdo) 
+    public GradientDescent(Double iniTheeta, Matrix X, Vector<Double> y, GradientDescentOptions gdo) 
             throws IOException {
-        matUtil = new MatrixUtils<E>();
+        matUtil = new MatrixUtils();
         theeta = new Vector<Double>();
         this.theeta.setSize(X.numOfCols());
         for (int i=0; i<this.theeta.size(); i++) {
@@ -68,7 +68,6 @@ public class GradientDescent<E extends Number, F extends Number> {
      * Run the gradient descent algorithm till threshold conditions are satisfied
      * @throws IOException
      */
-    @SuppressWarnings("unchecked")
     public Vector<Double> optimize() throws IOException {
         if (! (checkNumOfIter || checkMseGain))
             throw new IOException("Gradient descent must have a defined exit condition. " +
@@ -83,7 +82,7 @@ public class GradientDescent<E extends Number, F extends Number> {
         do {
             computeLossAndMse();
             for (int m=0; m<numOfFeatures; m++) {
-                gradient = (Double) sumOfElements(matUtil.multiply(X.transpose(), (Vector<E>)loss));
+                gradient = (Double) sumOfElements((X.transpose().multiply(loss)).getColumn(0));
                 step = (Double) GenericTypeOp.multiply(gradient, alpha)/numOfRows;
                 newTheeta.set(m, GenericTypeOp.subtract(theeta.get(m), step));
                 gradient = 0.0;
@@ -113,7 +112,7 @@ public class GradientDescent<E extends Number, F extends Number> {
     private void computeLossAndMse() throws IOException {
         Double yhat = new Double(0);
         loss = new Vector<Double>(numOfRows);
-        Vector<E> row = new Vector<E>();
+        Vector<Double> row = new Vector<Double>();
         Double currY = new Double(0);
         
         if (numOfFeatures != theeta.size())
@@ -121,7 +120,7 @@ public class GradientDescent<E extends Number, F extends Number> {
         
         for (int n=0; n<numOfRows; n++) {
             row = X.getRow(n);
-            yhat = (Double) matUtil.multiply(row, theeta);
+            yhat = (Double) matUtil.dotProduct(row, theeta);
             currY = (Double) y.get(n);
             loss.set(n, (yhat - currY));
             mse += (yhat - currY) * (yhat - currY);
@@ -137,7 +136,7 @@ public class GradientDescent<E extends Number, F extends Number> {
         return (Vector<Double>) theeta;
     }
     
-    private Double sumOfElements(Vector<E> a) {
+    private Double sumOfElements(Vector<Double> a) {
         Double ret = new Double(0.0);
         for (int i = 0; i < a.size(); i++) {
             ret += (Double) a.get(i);

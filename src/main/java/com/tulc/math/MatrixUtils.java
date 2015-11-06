@@ -3,18 +3,25 @@ package com.tulc.math;
 import java.io.IOException;
 import java.util.Vector;
 
-public class MatrixUtils<E extends Number> {
-    public Matrix<E> multiply(Matrix<E> a, Matrix<E> b) throws IOException {
-        return a.multiply(b);
+public class MatrixUtils {
+    public Double dotProduct(Vector<Double> a, Vector<Double> b) throws IOException {
+        Double ret = new Double(0.0);
+        if (a.size() != b.size())
+            throw new IOException("Cannot perform scalar multiplication on vectors of different sizes");
+        for (int i = 0; i < a.size(); i++) {
+            ret += a.get(i) * b.get(i);
+        }
+        return ret;
     }
     
-    public E multiply(Vector<E> a, Vector<Double> b) throws IOException {
-        Matrix<E> m1 = new Matrix<E>(1, a.size());
-        Matrix<E> m2 = new Matrix<E>(b.size(), 1);
-        return m1.multiply(m2).get(0, 0);
-    }
-
-    public Vector<E> multiply(Matrix<E> a, Vector<E> b) throws IOException {
-        return a.multiply(new Matrix<E>(b.size(), 1)).getColumn(0);
+    public Vector<Double> eleWiseMultiply(Vector<Double> a, Vector<Double> b) throws IOException {
+        if (a.size() != b.size()) {
+            throw new IOException("Cannot perform element-wise multiplication on vectors of different sizes");
+        }
+        Vector<Double> ret = new Vector<Double>(a.size());
+        for(int i = 0; i < a.size(); i++) {
+            ret.insertElementAt(a.get(i) * b.get(i), i);
+        }
+        return ret;
     }
 }
