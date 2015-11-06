@@ -11,13 +11,13 @@ import com.tulc.optimization.GradientDescentOptions;
 
 @SuppressWarnings("rawtypes")
 public class BaseModel<E extends Number, F extends Number> {
-    private Matrix X;
-    private Vector y;
-    private Vector<Double> theeta;
-    private Matrix<E> train_X;
-    private Matrix<E> test_X;
-    private Vector<F> train_y;
-    private Vector<F> test_y;
+    protected Matrix X;
+    protected Vector y;
+    protected Vector<Double> theeta;
+    protected Matrix<E> train_X;
+    protected Matrix<E> test_X;
+    protected Vector<F> train_y;
+    protected Vector<F> test_y;
     
     public BaseModel(Matrix<E> X, Vector<F> y) {
         this.X = X;
@@ -39,12 +39,13 @@ public class BaseModel<E extends Number, F extends Number> {
         
     }
     
-    public void train() throws IOException {
+    public Vector<Double> train() throws IOException {
         GradientDescentOptions gdo = new GradientDescentOptions();
         gdo.setNumOfIter(1000000);
         gdo.setMseGain(0.00001);
         GradientDescent<E, F> gd = new GradientDescent<E, F>(0.01, train_X, train_y, gdo);
         theeta = gd.getTheeta();
+        return theeta;
     }
     
     public Vector<Double> getTheeta() {
