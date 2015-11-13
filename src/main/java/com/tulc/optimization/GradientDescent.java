@@ -42,13 +42,11 @@ public class GradientDescent {
      * iterations is less than this value
      * @throws IOException 
      */
-    public GradientDescent(Double iniTheeta, Matrix X, Vector<Double> y, GradientDescentOptions gdo) 
-            throws IOException {
+    public GradientDescent(Double iniTheeta, Matrix X, Vector<Double> y, GradientDescentOptions gdo) throws IOException {
         matUtil = new MatrixUtils();
-        theeta = new Vector<Double>();
-        this.theeta.setSize(X.numOfCols());
-        for (int i=0; i<this.theeta.size(); i++) {
-            this.theeta.set(i, iniTheeta);
+        this.theeta = new Vector<Double>(X.numOfCols());
+        for (int i = 0; i < this.theeta.capacity(); i++) {
+            this.theeta.add(iniTheeta);
         }
         this.X = X;
         this.y = y;
@@ -84,7 +82,7 @@ public class GradientDescent {
             for (int m=0; m<numOfFeatures; m++) {
                 gradient = (Double) sumOfElements((X.transpose().multiply(loss)).getColumn(0));
                 step = (Double) GenericTypeOp.multiply(gradient, alpha)/numOfRows;
-                newTheeta.set(m, GenericTypeOp.subtract(theeta.get(m), step));
+                newTheeta.insertElementAt(GenericTypeOp.subtract(theeta.get(m), step), m);
                 gradient = 0.0;
             }
 
@@ -114,15 +112,14 @@ public class GradientDescent {
         loss = new Vector<Double>(numOfRows);
         Vector<Double> row = new Vector<Double>();
         Double currY = new Double(0);
-        
         if (numOfFeatures != theeta.size())
-            throw new IOException("Invalid dimensions for the vector theeta");
+            throw new IOException("Invalid dimensions for the vector theeta. Number of features: " + numOfFeatures + ", size of theeta: " + theeta.size());
         
         for (int n=0; n<numOfRows; n++) {
             row = X.getRow(n);
             yhat = (Double) matUtil.dotProduct(row, theeta);
             currY = (Double) y.get(n);
-            loss.set(n, (yhat - currY));
+            loss.insertElementAt((yhat - currY), n);
             mse += (yhat - currY) * (yhat - currY);
         }
         mse = mse/numOfRows;

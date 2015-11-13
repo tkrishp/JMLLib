@@ -18,12 +18,12 @@ public class BaseModel {
     protected Vector<Double> train_y;
     protected Vector<Double> test_y;
     
-    public BaseModel(Matrix X, Vector<Double> y) {
-        this.X = X;
+    public BaseModel(Matrix x, Vector<Double> y) {
+        this.X = x;
         this.y = y;
-        this.train_X = X;
+        this.train_X = x;
         this.train_y = y;
-        this.test_X = X;
+        this.test_X = x;
         this.test_y = y;
     }
     
