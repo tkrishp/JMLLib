@@ -7,6 +7,8 @@ import com.tulc.math.Matrix;
 import com.tulc.math.MatrixUtils;
 import com.tulc.optimization.GradientDescent;
 import com.tulc.optimization.GradientDescentOptions;
+import com.tulc.optimization.OptAlgorithm;
+import com.tulc.optimization.SGD;
 
 @SuppressWarnings("rawtypes")
 public class BaseModel {
@@ -17,14 +19,17 @@ public class BaseModel {
     protected Matrix test_X;
     protected Vector<Double> train_y;
     protected Vector<Double> test_y;
+    protected OptAlgorithm optAlg;
+    protected GradientDescent gd = null;
     
-    public BaseModel(Matrix x, Vector<Double> y) {
+    public BaseModel(Matrix x, Vector<Double> y, OptAlgorithm oa) {
         this.X = x;
         this.y = y;
         this.train_X = x;
         this.train_y = y;
         this.test_X = x;
         this.test_y = y;
+        this.optAlg = oa;
     }
     
     @SuppressWarnings("unchecked")
@@ -35,14 +40,22 @@ public class BaseModel {
         
         test_X = X.subsetRows(splitPoint + 1, X.numOfRows());
         test_y = (Vector) y.subList(splitPoint + 1, y.size());
-        
     }
     
     public Vector<Double> train() throws IOException {
         GradientDescentOptions gdo = new GradientDescentOptions();
-        gdo.setNumOfIter(1000000);
-        gdo.setMseGain(0.00001);
-        GradientDescent gd = new GradientDescent(0.01, train_X, train_y, gdo);
+        if (optAlg.getOptAlgorithmName().equals(OptAlgorithm.GRADIENT_DESCENT)) {
+            gdo.setNumOfIter(1000000);
+            gdo.setMseGain(0.00001);
+            gd = new GradientDescent(0.01, train_X, train_y, gdo);
+        }
+        else if (optAlg.getOptAlgorithmName().equals(OptAlgorithm.STOCHASTIC_GRADIENT_DESCENT)) {
+            gdo.setNumOfIter(1);
+            gdo.setMseGain(0.00001);
+            gd = new SGD(0.01, train_X, train_y, gdo);
+        }
+
+        
         theeta = gd.getTheeta();
         return theeta;
     }
