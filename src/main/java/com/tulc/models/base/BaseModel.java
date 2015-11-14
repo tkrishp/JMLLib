@@ -54,7 +54,6 @@ public class BaseModel {
             gdo.setMseGain(0.00001);
             gd = new SGD(0.01, train_X, train_y, gdo);
         }
-
         
         theeta = gd.getTheeta();
         return theeta;
