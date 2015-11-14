@@ -42,22 +42,22 @@ public class GradientDescent {
      * iterations is less than this value
      * @throws IOException 
      */
-    public GradientDescent(Double iniTheeta, Matrix X, Vector<Double> y, GradientDescentOptions gdo) throws IOException {
+    public GradientDescent(Double iniTheeta, Matrix dataSet, Vector<Double> respVec, GradientDescentOptions gdo) throws IOException {
         matUtil = new MatrixUtils();
-        this.theeta = new Vector<Double>(X.numOfCols());
-        for (int i = 0; i < this.theeta.capacity(); i++) {
-            this.theeta.add(iniTheeta);
+        theeta = new Vector<Double>(X.numOfCols());
+        for (int i = 0; i < theeta.capacity(); i++) {
+            theeta.add(iniTheeta);
         }
-        this.X = X;
-        this.y = y;
-        this.numOfIter = gdo.getNumOfIter();
-        this.mseGain = gdo.getMseGain();
-        this.numOfRows = X.numOfRows();
-        this.numOfFeatures = X.numOfCols();
-        this.mse = (double) 0;
+        X = dataSet;
+        y = respVec;
+        numOfIter = gdo.getNumOfIter();
+        mseGain = gdo.getMseGain();
+        numOfRows = X.numOfRows();
+        numOfFeatures = X.numOfCols();
+        mse = (double) 0;
         
-        this.checkNumOfIter = (numOfIter == -1) ? false : true;
-        this.checkMseGain = (mseGain == -1) ? false : true;
+        checkNumOfIter = (numOfIter == -1) ? false : true;
+        checkMseGain = (mseGain == -1) ? false : true;
         
         optimize();
      }
