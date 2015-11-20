@@ -3,7 +3,6 @@ package com.tulc.optimization;
 import java.io.IOException;
 import java.util.Vector;
 
-import com.tulc.math.GenericTypeOp;
 import com.tulc.math.Matrix;
 import com.tulc.math.MatrixUtil;
 
@@ -16,13 +15,12 @@ public class GradientDescent {
     protected Vector<Double> y;
     protected Matrix X;
     protected Vector<Double> loss;
-    protected int numOfIter = 0;
-    protected Double mseGain = 0.0;
     protected Integer numOfRows;
     protected Integer numOfFeatures;
     protected Double mse;
     protected boolean checkNumOfIter;
     protected boolean checkMseGain;
+    protected GradientDescentOptions gdOptions;
     
     /*
      * For use by derived classes
@@ -41,21 +39,21 @@ public class GradientDescent {
      * iterations is less than this value
      * @throws IOException 
      */
-    public GradientDescent(Double iniTheeta, Matrix dataSet, Vector<Double> respVec, GradientDescentOptions gdo) throws IOException {
+    public GradientDescent(Double iniTheeta, Matrix dataSet, Vector<Double> respVec, GradientDescentOptions gdo) 
+            throws IOException {
         theeta = new Vector<Double>(X.numOfCols());
         for (int i = 0; i < theeta.capacity(); i++) {
             theeta.add(iniTheeta);
         }
         X = dataSet;
         y = respVec;
-        numOfIter = gdo.getNumOfIter();
-        mseGain = gdo.getMseGain();
+        gdOptions = gdo;
         numOfRows = X.numOfRows();
         numOfFeatures = X.numOfCols();
         mse = (double) 0;
         
-        checkNumOfIter = (numOfIter == -1) ? false : true;
-        checkMseGain = (mseGain == -1) ? false : true;
+        checkNumOfIter = (gdOptions.getNumOfIter() == -1) ? false : true;
+        checkMseGain = (gdOptions.getMseGain() == -1) ? false : true;
         
         optimize();
      }
@@ -68,25 +66,24 @@ public class GradientDescent {
         if (! (checkNumOfIter || checkMseGain))
             throw new IOException("Gradient descent must have a defined exit condition. " +
                                   "Provide number of iterations or mse gain");
-        Double alpha = 0.001;
         Double prevMse = (double) 0;
         Vector<Double> gradient = new Vector<Double>(numOfFeatures);
         int i = 0;
         do {
             computeLossAndMse();
             for (int m=0; m<numOfFeatures; m++) {
-                gradient.insertElementAt((alpha/numOfRows) * MatrixUtil.dotProduct(X.getColumn(m), loss), m);
+                gradient.insertElementAt((gdOptions.getLearningRate()/numOfRows) * MatrixUtil.dotProduct(X.getColumn(m), loss), m);
             }
             if (i > 0) {
-                if ((mse - prevMse) < mseGain) {
+                if ((mse - prevMse) < gdOptions.getMseGain()) {
                     return getTheeta();
                 }
             }
             theeta = MatrixUtil.subtract(theeta, gradient);
             prevMse = mse;
         } while (
-                (checkNumOfIter ? (i++ < numOfIter) : true) && 
-                (checkMseGain ? ((mse - prevMse) > mseGain) : true)
+                (checkNumOfIter ? (i++ < gdOptions.getNumOfIter()) : true) && 
+                (checkMseGain ? ((mse - prevMse) > gdOptions.getMseGain()) : true)
             );
         return getTheeta();
     }
@@ -102,8 +99,8 @@ public class GradientDescent {
         Vector<Double> row = new Vector<Double>();
         Double currY = new Double(0);
         if (numOfFeatures != theeta.size())
-            throw new IOException("Invalid dimensions for the vector theeta. Number of features: " + numOfFeatures + ", size of theeta: " + theeta.size());
-        
+            throw new IOException("Invalid dimensions for the vector theeta. Number of features: " 
+                    + numOfFeatures + ", size of theeta: " + theeta.size());
         for (int n=0; n<numOfRows; n++) {
             row = X.getRow(n);
             yhat = MatrixUtil.dotProduct(row, theeta);
