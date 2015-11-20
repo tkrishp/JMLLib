@@ -3,8 +3,8 @@ package com.tulc.math;
 import java.io.IOException;
 import java.util.Vector;
 
-public class MatrixUtils {
-    public Double dotProduct(Vector<Double> a, Vector<Double> b) throws IOException {
+public class MatrixUtil {
+    public static Double dotProduct(Vector<Double> a, Vector<Double> b) throws IOException {
         Double ret = new Double(0.0);
         if (a.size() != b.size())
             throw new IOException("Cannot perform scalar multiplication on vectors of different sizes");
@@ -14,7 +14,7 @@ public class MatrixUtils {
         return ret;
     }
     
-    public Vector<Double> eleWiseMultiply(Vector<Double> a, Vector<Double> b) throws IOException {
+    public static Vector<Double> eleWiseMultiply(Vector<Double> a, Vector<Double> b) throws IOException {
         if (a.size() != b.size()) {
             throw new IOException("Cannot perform element-wise multiplication on vectors of different sizes");
         }
@@ -25,7 +25,7 @@ public class MatrixUtils {
         return ret;
     }
     
-    public Vector<Double> subtract(Vector<Double> a, Vector<Double> b) throws IOException {
+    public static Vector<Double> subtract(Vector<Double> a, Vector<Double> b) throws IOException {
         if (a.size() != b.size()) {
             throw new IOException("Cannot perform element-wise subtraction on vectors of different sizes");
         }
