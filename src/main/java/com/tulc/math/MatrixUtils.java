@@ -24,4 +24,15 @@ public class MatrixUtils {
         }
         return ret;
     }
+    
+    public Vector<Double> subtract(Vector<Double> a, Vector<Double> b) throws IOException {
+        if (a.size() != b.size()) {
+            throw new IOException("Cannot perform element-wise subtraction on vectors of different sizes");
+        }
+        Vector<Double> ret = new Vector<Double>(a.capacity());
+        for (int i = 0; i < ret.capacity(); i++) {
+            ret.insertElementAt((a.get(i) - b.get(i)), i);
+        }
+        return ret;
+    }
 }
