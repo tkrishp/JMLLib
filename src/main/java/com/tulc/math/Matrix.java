@@ -13,10 +13,8 @@ public class Matrix {
     protected int columns;
     private Vector<Double> columnVector;
     protected Vector<Vector<Double>> matrix;
-    private MatrixUtils mu;
 
     public Matrix(int rows, int columns) {
-        mu = new MatrixUtils();
         this.rows = rows;
         this.columns = columns;
         matrix = new Vector<Vector<Double>>(rows);
@@ -180,8 +178,8 @@ public class Matrix {
             row = getRow(i);
             for (int j = 0; j < outCols; j++) {
                 column = getColumn(j);
-                out.insert(mu.dotProduct(row, column), i, j);
-                mu.dotProduct(row, column);
+                out.insert(MatrixUtil.dotProduct(row, column), i, j);
+                MatrixUtil.dotProduct(row, column);
             }
         }
         return out;

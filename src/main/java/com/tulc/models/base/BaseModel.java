@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Vector;
 
 import com.tulc.math.Matrix;
-import com.tulc.math.MatrixUtils;
+import com.tulc.math.MatrixUtil;
 import com.tulc.optimization.GradientDescent;
 import com.tulc.optimization.GradientDescentOptions;
 import com.tulc.optimization.OptAlgorithm;
@@ -65,9 +65,8 @@ public class BaseModel {
     
     public Vector predict(Matrix X) throws IOException {
         Vector<Double> pred_Y = new Vector<Double>(X.numOfRows());
-        MatrixUtils mu = new MatrixUtils();
         for(int i = 0; i < X.numOfRows(); i++) {
-            pred_Y.add(i, mu.dotProduct(X.getRow(i), theeta));
+            pred_Y.add(i, MatrixUtil.dotProduct(X.getRow(i), theeta));
         }
         return pred_Y;
     }
