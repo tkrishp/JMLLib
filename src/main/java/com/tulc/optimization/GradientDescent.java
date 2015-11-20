@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import com.tulc.math.GenericTypeOp;
 import com.tulc.math.Matrix;
-import com.tulc.math.MatrixUtils;
+import com.tulc.math.MatrixUtil;
 
 /* 
  * Class that implements GradientDescent
@@ -21,7 +21,6 @@ public class GradientDescent {
     protected Integer numOfRows;
     protected Integer numOfFeatures;
     protected Double mse;
-    protected MatrixUtils matUtil;
     protected boolean checkNumOfIter;
     protected boolean checkMseGain;
     
@@ -43,7 +42,6 @@ public class GradientDescent {
      * @throws IOException 
      */
     public GradientDescent(Double iniTheeta, Matrix dataSet, Vector<Double> respVec, GradientDescentOptions gdo) throws IOException {
-        matUtil = new MatrixUtils();
         theeta = new Vector<Double>(X.numOfCols());
         for (int i = 0; i < theeta.capacity(); i++) {
             theeta.add(iniTheeta);
@@ -69,36 +67,27 @@ public class GradientDescent {
     public Vector<Double> optimize() throws IOException {
         if (! (checkNumOfIter || checkMseGain))
             throw new IOException("Gradient descent must have a defined exit condition. " +
-                    "Provide number of iterations or mse gain");
-        Double gradient = new Double(0);
+                                  "Provide number of iterations or mse gain");
         Double alpha = 0.001;
         Double prevMse = (double) 0;
-        Vector<Double> newTheeta = new Vector<Double>(numOfFeatures);
-        Double step = (double) 0;
-        
+        Vector<Double> gradient = new Vector<Double>(numOfFeatures);
         int i = 0;
         do {
             computeLossAndMse();
             for (int m=0; m<numOfFeatures; m++) {
-                gradient = (Double) sumOfElements((X.transpose().multiply(loss)).getColumn(0));
-                step = (Double) GenericTypeOp.multiply(gradient, alpha)/numOfRows;
-                newTheeta.insertElementAt(GenericTypeOp.subtract(theeta.get(m), step), m);
-                gradient = 0.0;
+                gradient.insertElementAt((alpha/numOfRows) * MatrixUtil.dotProduct(X.getColumn(m), loss), m);
             }
-
-            theeta = newTheeta;
             if (i > 0) {
                 if ((mse - prevMse) < mseGain) {
                     return getTheeta();
                 }
             }
+            theeta = MatrixUtil.subtract(theeta, gradient);
             prevMse = mse;
-            
         } while (
                 (checkNumOfIter ? (i++ < numOfIter) : true) && 
                 (checkMseGain ? ((mse - prevMse) > mseGain) : true)
             );
-        
         return getTheeta();
     }
     
@@ -117,8 +106,8 @@ public class GradientDescent {
         
         for (int n=0; n<numOfRows; n++) {
             row = X.getRow(n);
-            yhat = (Double) matUtil.dotProduct(row, theeta);
-            currY = (Double) y.get(n);
+            yhat = MatrixUtil.dotProduct(row, theeta);
+            currY = y.get(n);
             loss.insertElementAt((yhat - currY), n);
             mse += (yhat - currY) * (yhat - currY);
         }
@@ -131,13 +120,5 @@ public class GradientDescent {
      */
     public Vector<Double> getTheeta() {
         return (Vector<Double>) theeta;
-    }
-    
-    private Double sumOfElements(Vector<Double> a) {
-        Double ret = new Double(0.0);
-        for (int i = 0; i < a.size(); i++) {
-            ret += (Double) a.get(i);
-        }
-        return ret;
     }
 }
