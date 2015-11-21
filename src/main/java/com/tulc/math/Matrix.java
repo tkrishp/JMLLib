@@ -276,6 +276,20 @@ public class Matrix {
         }
         return out;
     }
+    
+    public void copy(Matrix m) throws IOException {
+        if (rows > m.numOfRows() || columns < m.numOfCols()) {
+            throw new IOException("Source matrix dimension [" + m.getMatrixDim() + "] "
+                    + "does not fit into target matrix [" + getMatrixDim() + "]");
+        }
+        
+        for (int i = 0; i < m.numOfRows(); i++) {
+            for (int j = 0; j < m.numOfCols(); j++) {
+                insert(m.get(i, j), i, j);
+            }
+        }
+        
+    }
 
     /**
      * true if matrices are equal
