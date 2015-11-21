@@ -70,7 +70,7 @@ public class Matrix {
      * @param j
      * @return
      */
-    public Vector<Double> getColumn(int j) {
+    public Vector<Double> getFeatureVector(int j) {
         Vector<Double> column = new Vector<Double>(rows);
         for (int i = 0; i < rows; i++) {
             column.add(matrix.get(i).get(j));
@@ -177,7 +177,7 @@ public class Matrix {
         for (int i = 0; i < outRows; i++) {
             row = getRow(i);
             for (int j = 0; j < outCols; j++) {
-                column = getColumn(j);
+                column = getFeatureVector(j);
                 out.insert(MatrixUtil.dotProduct(row, column), i, j);
                 MatrixUtil.dotProduct(row, column);
             }
