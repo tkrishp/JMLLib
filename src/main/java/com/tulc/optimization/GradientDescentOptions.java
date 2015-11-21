@@ -5,17 +5,22 @@ public class GradientDescentOptions {
     private final Double DEF_MSE_GAIN = 0.01;
     private final Double DEF_LEARN_RATE = 0.01;
     private final Double DEF_THEETA = 0.01;
+    private final String L1_PENALTY = "L1";
+    private final String L2_PENALTY = "L2";
+    private final String DEF_PENALTY = L2_PENALTY;
     
     private Integer numOfIter;
     private double mseGain;
     private double alpha;
     private double iniTheeta;
+    private String penalty;
     
     public GradientDescentOptions() {
         numOfIter = DEF_NUM_ITER;
         mseGain = DEF_MSE_GAIN;
         alpha = DEF_LEARN_RATE;
         iniTheeta = DEF_THEETA;
+        penalty = DEF_PENALTY;
     }
     
     public void setNumOfIter(Integer n) {
@@ -48,6 +53,14 @@ public class GradientDescentOptions {
     
     public double getIniTheeta() {
         return iniTheeta;
+    }
+    
+    public void setPenalty(String p) {
+        penalty = p;
+    }
+    
+    public String getPenalty() {
+        return penalty;
     }
 }
 
