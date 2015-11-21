@@ -74,6 +74,3 @@ public class GradientDescentOptions {
         return intercept;
     }
 }
-
-
-
