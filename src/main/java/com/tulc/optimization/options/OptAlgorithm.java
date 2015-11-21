@@ -1,4 +1,4 @@
-package com.tulc.optimization;
+package com.tulc.optimization.options;
 
 public enum OptAlgorithm {
     GRADIENT_DESCENT("GD"),
