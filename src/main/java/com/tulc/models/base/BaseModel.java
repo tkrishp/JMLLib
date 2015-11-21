@@ -7,8 +7,8 @@ import com.tulc.math.Matrix;
 import com.tulc.math.MatrixUtil;
 import com.tulc.optimization.GradientDescent;
 import com.tulc.optimization.GradientDescentOptions;
-import com.tulc.optimization.OptAlgorithm;
 import com.tulc.optimization.SGD;
+import com.tulc.optimization.options.OptAlgorithm;
 
 @SuppressWarnings("rawtypes")
 public class BaseModel {
