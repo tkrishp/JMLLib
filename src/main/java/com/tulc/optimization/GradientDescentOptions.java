@@ -1,29 +1,35 @@
 package com.tulc.optimization;
 
+import java.io.IOException;
+
 import com.tulc.optimization.options.Regularization;
 
 public class GradientDescentOptions {
-    private final Integer DEF_NUM_ITER = 1;
-    private final Double DEF_MSE_GAIN = 0.01;
-    private final Double DEF_LEARN_RATE = 0.01;
-    private final Double DEF_THEETA = 0.01;
-    private final Regularization DEF_PENALTY = Regularization.NONE;
+    private final double UNDEFINED = -1d;
+    private final int DEF_NUM_ITER = 1;
+    private final double DEF_MSE_GAIN = 0.01;
+    private final double DEF_LEARN_RATE = 0.01;
+    private final double DEF_THEETA = 0.01;
     private final boolean DEF_INTERCEPT = false;
+    private final Regularization DEF_PENALTY = Regularization.NONE;
+    private final double DEF_LAMBDA = UNDEFINED; // regularization parameter
     
-    private Integer numOfIter;
+    private int numOfIter;
     private double mseGain;
     private double alpha;
     private double iniTheeta;
-    private Regularization penalty;
     private boolean intercept;
+    private Regularization penalty;
+    private double lambda;
     
     public GradientDescentOptions() {
         numOfIter = DEF_NUM_ITER;
         mseGain = DEF_MSE_GAIN;
         alpha = DEF_LEARN_RATE;
         iniTheeta = DEF_THEETA;
-        penalty = DEF_PENALTY;
         intercept = DEF_INTERCEPT;
+        penalty = DEF_PENALTY;
+        lambda = DEF_LAMBDA;
     }
     
     public void setNumOfIter(Integer n) {
@@ -72,5 +78,19 @@ public class GradientDescentOptions {
     
     public boolean isInterceptSet() {
         return intercept;
+    }
+    
+    public void setRegularizationParam(double d) throws IOException {
+        if (penalty == Regularization.NONE) {
+            throw new IOException("Regularization penalty must be defined before regularization parameter");
+        }
+        lambda = d;
+    }
+    
+    public double getRegularizationParam() throws IOException {
+        if (lambda == UNDEFINED) {
+            throw new IOException("Regularization parameter is undefined");
+        }
+        return lambda;
     }
 }

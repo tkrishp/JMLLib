@@ -83,8 +83,8 @@ public class GradientDescent {
             computeLossAndMse();
             for (int m = 0; m < numOfFeatures; m++) {
                 gradient.insertElementAt(
-                        (gdOptions.getLearningRate()/numOfRows) * 
-                        MatrixUtil.dotProduct(X.getFeatureVector(m), loss), m);
+                    (gdOptions.getLearningRate()/numOfRows) * 
+                    MatrixUtil.dotProduct(X.getFeatureVector(m), loss), m);
             }
             if (i > 0) {
                 if ((mse - prevMse) < gdOptions.getMseGain()) {
