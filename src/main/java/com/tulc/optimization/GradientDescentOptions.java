@@ -7,7 +7,7 @@ public class GradientDescentOptions {
     private final Double DEF_MSE_GAIN = 0.01;
     private final Double DEF_LEARN_RATE = 0.01;
     private final Double DEF_THEETA = 0.01;
-    private final Regularization DEF_PENALTY = Regularization.L2;
+    private final Regularization DEF_PENALTY = Regularization.NONE;
     private final boolean DEF_INTERCEPT = false;
     
     private Integer numOfIter;
