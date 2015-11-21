@@ -21,6 +21,20 @@ public class Matrix {
             matrix.add(initializeRowVector());
         }
     }
+    
+    public Matrix(Matrix m) {
+        rows = m.numOfRows();
+        columns = m.numOfCols();
+        matrix = new Vector<Vector<Double>>(rows);
+        for (int i = 0; i < rows; i++) {
+            matrix.add(initializeRowVector());
+        }
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                insert(m.get(i, j), i, j);
+            }
+        }
+    }
 
     private Vector<Double> initializeRowVector() {
         Vector<Double> rowVector = new Vector<Double>(columns);
