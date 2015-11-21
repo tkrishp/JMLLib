@@ -35,4 +35,12 @@ public class MatrixUtil {
         }
         return ret;
     }
+    
+    public static Vector<Double> getUnitVector(int m) {
+        Vector<Double> uv = new Vector<Double>(m);
+        for (int i = 0; i < m; i++) {
+            uv.set(i, 1d);
+        }
+        return uv;
+    }
 }
