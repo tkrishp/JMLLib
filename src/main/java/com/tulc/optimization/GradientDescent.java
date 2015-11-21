@@ -21,6 +21,7 @@ public class GradientDescent {
     protected boolean checkNumOfIter;
     protected boolean checkMseGain;
     protected GradientDescentOptions gdOptions;
+    protected Integer interceptIndex;
     
     /*
      * For use by derived classes
@@ -41,11 +42,20 @@ public class GradientDescent {
      */
     public GradientDescent(Double iniTheeta, Matrix dataSet, Vector<Double> respVec, GradientDescentOptions gdo) 
             throws IOException {
+        if (gdo.isInterceptSet()) {
+            interceptIndex = dataSet.numOfCols();
+            X = new Matrix(dataSet.numOfRows(), dataSet.numOfCols() + 1);
+            X.copy(dataSet);
+            X.setFeatureVector(interceptIndex, MatrixUtil.getUnitVector(dataSet.numOfRows()));
+        }
+        else {
+            interceptIndex = -1;
+            X = new Matrix(dataSet);
+        }
         theeta = new Vector<Double>(X.numOfCols());
         for (int i = 0; i < theeta.capacity(); i++) {
             theeta.add(iniTheeta);
         }
-        X = dataSet;
         y = respVec;
         gdOptions = gdo;
         numOfRows = X.numOfRows();
@@ -71,8 +81,10 @@ public class GradientDescent {
         int i = 0;
         do {
             computeLossAndMse();
-            for (int m=0; m<numOfFeatures; m++) {
-                gradient.insertElementAt((gdOptions.getLearningRate()/numOfRows) * MatrixUtil.dotProduct(X.getColumn(m), loss), m);
+            for (int m = 0; m < numOfFeatures; m++) {
+                gradient.insertElementAt(
+                        (gdOptions.getLearningRate()/numOfRows) * 
+                        MatrixUtil.dotProduct(X.getFeatureVector(m), loss), m);
             }
             if (i > 0) {
                 if ((mse - prevMse) < gdOptions.getMseGain()) {
@@ -93,7 +105,7 @@ public class GradientDescent {
      * loss is a vector of differences between actual and predicted values for each record in training set
      * @throws IOException
      */
-    private void computeLossAndMse() throws IOException {
+    protected void computeLossAndMse() throws IOException {
         Double yhat = new Double(0);
         loss = new Vector<Double>(numOfRows);
         Vector<Double> row = new Vector<Double>();
@@ -101,7 +113,7 @@ public class GradientDescent {
         if (numOfFeatures != theeta.size())
             throw new IOException("Invalid dimensions for the vector theeta. Number of features: " 
                     + numOfFeatures + ", size of theeta: " + theeta.size());
-        for (int n=0; n<numOfRows; n++) {
+        for (int n = 0; n < numOfRows; n++) {
             row = X.getRow(n);
             yhat = MatrixUtil.dotProduct(row, theeta);
             currY = y.get(n);
