@@ -8,12 +8,14 @@ public class GradientDescentOptions {
     private final Double DEF_LEARN_RATE = 0.01;
     private final Double DEF_THEETA = 0.01;
     private final Regularization DEF_PENALTY = Regularization.L2;
+    private final boolean DEF_INTERCEPT = false;
     
     private Integer numOfIter;
     private double mseGain;
     private double alpha;
     private double iniTheeta;
     private Regularization penalty;
+    private boolean intercept;
     
     public GradientDescentOptions() {
         numOfIter = DEF_NUM_ITER;
@@ -21,6 +23,7 @@ public class GradientDescentOptions {
         alpha = DEF_LEARN_RATE;
         iniTheeta = DEF_THEETA;
         penalty = DEF_PENALTY;
+        intercept = DEF_INTERCEPT;
     }
     
     public void setNumOfIter(Integer n) {
@@ -62,5 +65,15 @@ public class GradientDescentOptions {
     public Regularization getPenalty() {
         return penalty;
     }
+    
+    public void setIntercept(boolean b) {
+        intercept = b;
+    }
+    
+    public boolean isInterceptSet() {
+        return intercept;
+    }
 }
+
+
 
