@@ -1,19 +1,19 @@
 package com.tulc.optimization;
 
+import com.tulc.optimization.options.Regularization;
+
 public class GradientDescentOptions {
     private final Integer DEF_NUM_ITER = 1;
     private final Double DEF_MSE_GAIN = 0.01;
     private final Double DEF_LEARN_RATE = 0.01;
     private final Double DEF_THEETA = 0.01;
-    private final String L1_PENALTY = "L1";
-    private final String L2_PENALTY = "L2";
-    private final String DEF_PENALTY = L2_PENALTY;
+    private final Regularization DEF_PENALTY = Regularization.L2;
     
     private Integer numOfIter;
     private double mseGain;
     private double alpha;
     private double iniTheeta;
-    private String penalty;
+    private Regularization penalty;
     
     public GradientDescentOptions() {
         numOfIter = DEF_NUM_ITER;
@@ -55,11 +55,11 @@ public class GradientDescentOptions {
         return iniTheeta;
     }
     
-    public void setPenalty(String p) {
+    public void setPenalty(Regularization p) {
         penalty = p;
     }
     
-    public String getPenalty() {
+    public Regularization getPenalty() {
         return penalty;
     }
 }
