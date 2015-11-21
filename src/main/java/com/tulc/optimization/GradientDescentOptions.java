@@ -2,6 +2,7 @@ package com.tulc.optimization;
 
 import java.io.IOException;
 
+import com.tulc.optimization.options.LearningRate;
 import com.tulc.optimization.options.Regularization;
 
 public class GradientDescentOptions {
@@ -13,23 +14,27 @@ public class GradientDescentOptions {
     private final boolean DEF_INTERCEPT = false;
     private final Regularization DEF_PENALTY = Regularization.NONE;
     private final double DEF_LAMBDA = UNDEFINED; // regularization parameter
+    private final LearningRate DEF_LEARNING_RATE = LearningRate.FIXED;
     
     private int numOfIter;
     private double mseGain;
-    private double alpha;
     private double iniTheeta;
     private boolean intercept;
     private Regularization penalty;
     private double lambda;
+    private LearningRate learningRateType;
+    private double alpha;
+    
     
     public GradientDescentOptions() {
         numOfIter = DEF_NUM_ITER;
         mseGain = DEF_MSE_GAIN;
-        alpha = DEF_LEARN_RATE;
         iniTheeta = DEF_THEETA;
         intercept = DEF_INTERCEPT;
         penalty = DEF_PENALTY;
         lambda = DEF_LAMBDA;
+        learningRateType = DEF_LEARNING_RATE;
+        alpha = DEF_LEARN_RATE;
     }
     
     public void setNumOfIter(Integer n) {
@@ -92,5 +97,13 @@ public class GradientDescentOptions {
             throw new IOException("Regularization parameter is undefined");
         }
         return lambda;
+    }
+    
+    public void setLearningRateType(LearningRate lr) {
+        learningRateType = lr;
+    }
+    
+    public LearningRate getLearningRateType() {
+        return learningRateType;
     }
 }
