@@ -14,18 +14,18 @@ public class Matrix {
     private Vector<Double> columnVector;
     protected Vector<Vector<Double>> matrix;
 
-    public Matrix(int rows, int columns) {
-        this.rows = rows;
-        this.columns = columns;
+    public Matrix(int r, int c) {
+        rows = r;
+        columns = c;
         matrix = new Vector<Vector<Double>>(rows);
         for (int i = 0; i < rows; i++) {
-            matrix.add(getColumnVector(columns));
+            matrix.add(getRowVector());
         }
     }
 
-    private Vector<Double> getColumnVector(int cols) {
+    private Vector<Double> getRowVector() {
         columnVector = new Vector<Double>(columns);
-        for (int i = 0; i < cols; i++) {
+        for (int i = 0; i < columns; i++) {
             columnVector.add(i, 0.0);
         }
         return columnVector;
