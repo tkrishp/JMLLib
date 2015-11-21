@@ -11,7 +11,6 @@ import java.util.Vector;
 public class Matrix {
     protected int rows;
     protected int columns;
-    private Vector<Double> columnVector;
     protected Vector<Vector<Double>> matrix;
 
     public Matrix(int r, int c) {
@@ -19,18 +18,18 @@ public class Matrix {
         columns = c;
         matrix = new Vector<Vector<Double>>(rows);
         for (int i = 0; i < rows; i++) {
-            matrix.add(getRowVector());
+            matrix.add(initializeRowVector());
         }
     }
 
-    private Vector<Double> getRowVector() {
-        columnVector = new Vector<Double>(columns);
+    private Vector<Double> initializeRowVector() {
+        Vector<Double> rowVector = new Vector<Double>(columns);
         for (int i = 0; i < columns; i++) {
-            columnVector.add(i, 0.0);
+            rowVector.add(i, 0.0);
         }
-        return columnVector;
+        return rowVector;
     }
-
+    
     public String getMatrixDim() {
         return numOfRows() + " x " + numOfCols();
     }
@@ -61,7 +60,11 @@ public class Matrix {
      * @return
      */
     public Vector<Double> getRow(int i) {
-        return (Vector<Double>) matrix.get(i);
+        return matrix.get(i);
+    }
+    
+    public void setRow(int i, Vector<Double> v) {
+        matrix.set(i, v);
     }
 
     /**
@@ -76,6 +79,18 @@ public class Matrix {
             column.add(matrix.get(i).get(j));
         }
         return column;
+    }
+    
+    /**
+     * Updates the feature vector in the matrix with input v
+     * at index j
+     * @param j
+     * @param v
+     */
+    public void setFeatureVector(int j, Vector<Double> v) {
+        for (int i = 0; i < rows; i++) {
+            insert(v.get(i), i, j);
+        }
     }
 
     /**
