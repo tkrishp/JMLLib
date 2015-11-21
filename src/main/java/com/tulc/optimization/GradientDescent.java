@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import com.tulc.math.Matrix;
 import com.tulc.math.MatrixUtil;
+import com.tulc.optimization.options.Regularization;
 
 /* 
  * Class that implements GradientDescent
@@ -81,17 +82,24 @@ public class GradientDescent {
         int i = 0;
         do {
             computeLossAndMse();
-            for (int m = 0; m < numOfFeatures; m++) {
-                gradient.insertElementAt(
-                    (gdOptions.getLearningRate()/numOfRows) * 
-                    MatrixUtil.dotProduct(X.getFeatureVector(m), loss), m);
-            }
             if (i > 0) {
                 if ((mse - prevMse) < gdOptions.getMseGain()) {
                     return getTheeta();
                 }
             }
-            theeta = MatrixUtil.subtract(theeta, gradient);
+            // take one step in the direction of the gradient
+            for (int m = 0; m < numOfFeatures; m++) {
+                gradient.insertElementAt(
+                    (gdOptions.getLearningRate()/numOfRows) * 
+                    MatrixUtil.dotProduct(X.getFeatureVector(m), loss), m);
+            }
+            theeta = MatrixUtil.subtract(
+                        (gdOptions.getPenalty() == Regularization.L1) ? 
+                            MatrixUtil.scaleVector(
+                                (1 - (gdOptions.getLearningRate()*gdOptions.getRegularizationParam()/X.numOfRows())), 
+                                theeta) : theeta, 
+                        gradient
+                    );
             prevMse = mse;
         } while (
                 (checkNumOfIter ? (i++ < gdOptions.getNumOfIter()) : true) && 
