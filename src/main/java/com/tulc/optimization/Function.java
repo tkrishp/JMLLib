@@ -1,6 +1,6 @@
 package com.tulc.optimization;
 
-import com.tulc.math.Dataset;
+import com.tulc.data.Dataset;
 import com.tulc.math.RVector;
 
 /* 

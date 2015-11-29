@@ -3,7 +3,7 @@ package com.tulc.models.base;
 import java.io.IOException;
 import java.util.Vector;
 
-import com.tulc.math.Dataset;
+import com.tulc.data.Dataset;
 import com.tulc.math.MatrixUtil;
 import com.tulc.math.RVector;
 import com.tulc.optimization.GradientDescent;

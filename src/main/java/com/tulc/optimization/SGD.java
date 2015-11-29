@@ -2,7 +2,7 @@ package com.tulc.optimization;
 
 import java.util.Vector;
 
-import com.tulc.math.Dataset;
+import com.tulc.data.Dataset;
 import com.tulc.math.RVector;
 
 public class SGD extends GradientDescent {

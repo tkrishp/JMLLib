@@ -2,7 +2,7 @@ package com.tulc.optimization;
 
 import java.io.IOException;
 
-import com.tulc.math.Dataset;
+import com.tulc.data.Dataset;
 import com.tulc.math.MatrixUtil;
 import com.tulc.math.RVector;
 

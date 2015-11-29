@@ -2,7 +2,7 @@ package com.tulc.models.classification;
 
 import com.tulc.models.base.BaseModel;
 import com.tulc.optimization.options.OptAlgorithm;
-import com.tulc.math.Dataset;
+import com.tulc.data.Dataset;
 import com.tulc.math.RVector;
 
 public class LogisiticRegression extends BaseModel {
