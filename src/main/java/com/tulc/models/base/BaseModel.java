@@ -3,7 +3,7 @@ package com.tulc.models.base;
 import java.io.IOException;
 import java.util.Vector;
 
-import com.tulc.math.Matrix;
+import com.tulc.math.Dataset;
 import com.tulc.math.MatrixUtil;
 import com.tulc.math.RVector;
 import com.tulc.optimization.GradientDescent;
@@ -13,17 +13,17 @@ import com.tulc.optimization.options.OptAlgorithm;
 
 @SuppressWarnings("rawtypes")
 public class BaseModel {
-    protected Matrix X;
+    protected Dataset X;
     protected RVector y;
     protected RVector theeta;
-    protected Matrix train_X;
-    protected Matrix test_X;
+    protected Dataset train_X;
+    protected Dataset test_X;
     protected RVector train_y;
     protected RVector test_y;
     protected OptAlgorithm optAlg;
     protected GradientDescent gd = null;
     
-    public BaseModel(Matrix x, RVector y, OptAlgorithm oa) {
+    public BaseModel(Dataset x, RVector y, OptAlgorithm oa) {
         this.X = x;
         this.y = y;
         this.train_X = x;
@@ -64,7 +64,7 @@ public class BaseModel {
         return theeta;
     }
     
-    public Vector predict(Matrix X) throws IOException {
+    public Vector predict(Dataset X) throws IOException {
         RVector pred_Y = new RVector(X.numOfRows());
         for(int i = 0; i < X.numOfRows(); i++) {
             pred_Y.add(i, MatrixUtil.dotProduct(X.getRow(i), theeta));

@@ -8,12 +8,12 @@ import java.util.Vector;
  * @version 0.1
  * @param <E>
  */
-public class Matrix {
+public class Dataset {
     protected int rows;
     protected int columns;
     protected Vector<RVector> matrix;
 
-    public Matrix(int r, int c) {
+    public Dataset(int r, int c) {
         rows = r;
         columns = c;
         matrix = new Vector<RVector>(rows);
@@ -22,7 +22,7 @@ public class Matrix {
         }
     }
     
-    public Matrix(Matrix m) {
+    public Dataset(Dataset m) {
         rows = m.numOfRows();
         columns = m.numOfCols();
         matrix = new Vector<RVector>(rows);
@@ -142,14 +142,14 @@ public class Matrix {
      * @return
      * @throws IOException
      */
-    public Matrix add(Matrix in) throws IOException {
+    public Dataset add(Dataset in) throws IOException {
         if ((in.numOfRows() != numOfRows()) || in.numOfCols() != numOfCols()) {
             String err = "Error! Matrix dimensions donot match";
             System.out.println(err);
             throw new IOException(err);
         }
 
-        Matrix out = new Matrix(rows, columns);
+        Dataset out = new Dataset(rows, columns);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -167,14 +167,14 @@ public class Matrix {
      * @return
      * @throws IOException
      */
-    public Matrix subtract(Matrix in) throws IOException {
+    public Dataset subtract(Dataset in) throws IOException {
         if ((in.numOfRows() != numOfRows()) || in.numOfCols() != numOfCols()) {
             String err = "Error! Matrix dimensions donot match";
             System.out.println(err);
             throw new IOException(err);
         }
 
-        Matrix out = new Matrix(rows, columns);
+        Dataset out = new Dataset(rows, columns);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -192,7 +192,7 @@ public class Matrix {
      * @return
      * @throws IOException
      */
-    public Matrix multiply(Matrix in) throws IOException {
+    public Dataset multiply(Dataset in) throws IOException {
         if (columns != in.numOfRows()) {
             String err = "Error! cannot multiply. columns of LHS != rows of RHS";
             throw new IOException(err);
@@ -202,7 +202,7 @@ public class Matrix {
         int outCols = in.numOfCols();
         RVector row = new RVector(columns);
         RVector column = new RVector(in.numOfRows());
-        Matrix out = new Matrix(outRows, outCols);
+        Dataset out = new Dataset(outRows, outCols);
         for (int i = 0; i < outRows; i++) {
             row = getRow(i);
             for (int j = 0; j < outCols; j++) {
@@ -214,7 +214,7 @@ public class Matrix {
     }
 
     public RVector multiply(RVector in) throws IOException {
-        Matrix m = new Matrix(in.size(), 1);
+        Dataset m = new Dataset(in.size(), 1);
         for (int i = 0; i < m.rows; i++) {
             m.insert(in.get(i), i, 0);
         }
@@ -235,10 +235,10 @@ public class Matrix {
      * @return
      * @throws IOException
      */
-    public Matrix subset(int rowStart, int rowEnd, int colStart, int colEnd) throws IOException {
+    public Dataset subset(int rowStart, int rowEnd, int colStart, int colEnd) throws IOException {
         if (rowEnd > this.rows || colEnd > this.columns)
             throw new IOException("Row or column index out of Matrix range");
-        Matrix subsetMatrix = new Matrix((rowEnd - rowStart) + 1, (colEnd - colStart) + 1);
+        Dataset subsetMatrix = new Dataset((rowEnd - rowStart) + 1, (colEnd - colStart) + 1);
         for (int i = rowStart - 1; i < rowEnd; i++) {
             for (int j = colStart - 1; j < colEnd; j++) {
                 subsetMatrix.insert(this.get(i, j), i, j);
@@ -247,17 +247,17 @@ public class Matrix {
         return subsetMatrix;
     }
 
-    public Matrix subsetRows(int rowStart, int rowEnd) throws IOException {
+    public Dataset subsetRows(int rowStart, int rowEnd) throws IOException {
         if (rowEnd > this.rows)
             throw new IOException("Row index out of Matrix range");
-        Matrix subsetMatrix = subset(rowStart, rowEnd, 1, columns);
+        Dataset subsetMatrix = subset(rowStart, rowEnd, 1, columns);
         return subsetMatrix;
     }
 
-    public Matrix subsetColumns(int colStart, int colEnd) throws IOException {
+    public Dataset subsetColumns(int colStart, int colEnd) throws IOException {
         if (colEnd > this.rows)
             throw new IOException("Column index out of Matrix range");
-        Matrix subsetMatrix = subset(1, rows, colStart, colEnd);
+        Dataset subsetMatrix = subset(1, rows, colStart, colEnd);
         return subsetMatrix;
     }
 
@@ -266,8 +266,8 @@ public class Matrix {
      * 
      * @return
      */
-    public Matrix transpose() {
-        Matrix out = new Matrix(columns, rows);
+    public Dataset transpose() {
+        Dataset out = new Dataset(columns, rows);
         for (int i = 0; i < out.numOfRows(); i++) {
             for (int j = 0; j < out.numOfCols(); j++) {
                 out.insert(get(j, i), i, j);
@@ -276,7 +276,7 @@ public class Matrix {
         return out;
     }
     
-    public void copy(Matrix m) throws IOException {
+    public void copy(Dataset m) throws IOException {
         if (rows > m.numOfRows() || columns < m.numOfCols()) {
             throw new IOException("Source matrix dimension [" + m.getMatrixDim() + "] "
                     + "does not fit into target matrix [" + getMatrixDim() + "]");
@@ -297,7 +297,7 @@ public class Matrix {
      */
     public void insertFeatureVector(RVector fv, int ind) {
         int cols = columns + 1;
-        Matrix newMatrix = new Matrix(rows, cols);
+        Dataset newMatrix = new Dataset(rows, cols);
         for (int j = 0; j < cols; j++) {
             if (j == ind) {
                 newMatrix.setFeatureVector(j, fv);
@@ -315,7 +315,7 @@ public class Matrix {
      * @param in
      * @return
      */
-    public boolean equals(Matrix in) {
+    public boolean equals(Dataset in) {
         if (rows != in.numOfRows())
             return false;
         if (columns != in.numOfCols())

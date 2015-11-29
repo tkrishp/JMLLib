@@ -2,7 +2,7 @@ package com.tulc.optimization;
 
 import java.io.IOException;
 
-import com.tulc.math.Matrix;
+import com.tulc.math.Dataset;
 import com.tulc.math.MatrixUtil;
 import com.tulc.math.RVector;
 
@@ -13,7 +13,7 @@ import com.tulc.math.RVector;
  */
 public class OLSFunction extends Function {
     @Override
-    public RVector gradient(Matrix X, RVector y, RVector theeta) throws IOException {
+    public RVector gradient(Dataset X, RVector y, RVector theeta) throws IOException {
         RVector loss = MatrixUtil.subtract(X.multiply(theeta), y);
         return X.transpose().multiply(loss);
     }

@@ -1,7 +1,7 @@
 package com.tulc.optimization;
 
 import java.io.IOException;
-import com.tulc.math.Matrix;
+import com.tulc.math.Dataset;
 import com.tulc.math.MatrixUtil;
 import com.tulc.math.RVector;
 import com.tulc.metrics.util.Metric;
@@ -15,7 +15,7 @@ public class GradientDescent {
     protected RVector theeta;
     protected RVector y;
     protected RVector yhat;
-    protected Matrix X;
+    protected Dataset X;
     protected Integer numOfRows;
     protected Integer numOfFeatures;
     protected Double mse;
@@ -42,16 +42,16 @@ public class GradientDescent {
      * iterations is less than this value
      * @throws Exception 
      */
-    public GradientDescent(Double iniTheeta, Matrix dataSet, RVector respVec, GradientDescentOptions gdo) 
+    public GradientDescent(Double iniTheeta, Dataset dataSet, RVector respVec, GradientDescentOptions gdo) 
             throws Exception {
         costFunction = new OLSFunction();
         if (gdo.isInterceptSet()) {
-            X = new Matrix(dataSet);
+            X = new Dataset(dataSet);
             X.insertFeatureVector(MatrixUtil.getUnitVector(dataSet.numOfRows()), 0);
         }
         else {
             interceptIndex = -1;
-            X = new Matrix(dataSet);
+            X = new Dataset(dataSet);
         }
         theeta = new RVector(X.numOfCols());
         for (int i = 0; i < theeta.capacity(); i++) {
