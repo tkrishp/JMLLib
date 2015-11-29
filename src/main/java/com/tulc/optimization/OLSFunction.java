@@ -12,7 +12,7 @@ import com.tulc.math.RVector;
  */
 public class OLSFunction extends Function {
     @Override
-    public double firstDerivative(RVector row, RVector theeta) throws IOException {
+    public double gradient(RVector row, RVector theeta) throws IOException {
         gradient = MatrixUtil.dotProduct(row, theeta);
         return gradient;
     }

@@ -10,5 +10,5 @@ import com.tulc.math.RVector;
  */
 public abstract class Function {
     protected double gradient = 0d;
-    abstract public double firstDerivative(RVector row, RVector theeta) throws Exception;
+    abstract public double gradient(RVector row, RVector theeta) throws Exception;
 }
