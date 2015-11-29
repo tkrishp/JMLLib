@@ -1,5 +1,6 @@
 package com.tulc.optimization;
 
+import com.tulc.math.Matrix;
 import com.tulc.math.RVector;
 
 /* 
@@ -10,5 +11,5 @@ import com.tulc.math.RVector;
  */
 public abstract class Function {
     protected double gradient = 0d;
-    abstract public double gradient(RVector row, RVector theeta) throws Exception;
+    abstract public RVector gradient(Matrix X, RVector y, RVector theeta) throws Exception;
 }
