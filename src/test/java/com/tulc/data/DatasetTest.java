@@ -1,11 +1,13 @@
-package com.tulc.math;
+package com.tulc.data;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class MatrixTest {
-    Matrix m = new Matrix(5, 3);
+import com.tulc.data.Dataset;
+
+public class DatasetTest {
+    Dataset m = new Dataset(5, 3);
 
     @Test
     public void testMatrix() {

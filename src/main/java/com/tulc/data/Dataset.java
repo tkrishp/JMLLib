@@ -3,6 +3,7 @@ package com.tulc.data;
 import java.io.IOException;
 import java.util.Vector;
 
+import com.tulc.math.MatrixUtil;
 import com.tulc.math.RVector;
 
 /**
