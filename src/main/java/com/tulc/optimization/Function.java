@@ -1,5 +1,7 @@
 package com.tulc.optimization;
 
+import java.io.IOException;
+
 import com.tulc.data.Dataset;
 import com.tulc.math.RVector;
 
@@ -11,5 +13,8 @@ import com.tulc.math.RVector;
  */
 public abstract class Function {
     protected double gradient = 0d;
-    abstract public RVector gradient(Dataset X, RVector y, RVector theeta) throws Exception;
+    protected RVector loss;
+    protected double mse = 0d;
+    abstract public RVector gradient(Dataset X, RVector y, RVector theeta) throws IOException;
+    abstract public void update(Dataset X, RVector y, RVector theeta) throws IOException;
 }

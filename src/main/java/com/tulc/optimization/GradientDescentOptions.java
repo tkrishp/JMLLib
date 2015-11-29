@@ -24,6 +24,7 @@ public class GradientDescentOptions {
     private double lambda;
     private LearningRate learningRateType;
     private double alpha;
+    private Function costFunction;
     
     
     public GradientDescentOptions() {
@@ -35,6 +36,7 @@ public class GradientDescentOptions {
         lambda = DEF_LAMBDA;
         learningRateType = DEF_LEARNING_RATE;
         alpha = DEF_LEARN_RATE;
+        costFunction = new OLSFunction();
     }
     
     public void setNumOfIter(Integer n) {
@@ -105,5 +107,13 @@ public class GradientDescentOptions {
     
     public LearningRate getLearningRateType() {
         return learningRateType;
+    }
+    
+    public Function getCostFunction() {
+        return costFunction;
+    }
+    
+    public void setCostFunction(Function f) {
+        costFunction = f;
     }
 }

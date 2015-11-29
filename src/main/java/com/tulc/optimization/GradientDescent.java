@@ -16,13 +16,10 @@ public class GradientDescent {
     protected RVector y;
     protected RVector yhat;
     protected Dataset X;
-    protected Integer numOfRows;
-    protected Integer numOfFeatures;
     protected Double mse;
     protected boolean checkNumOfIter;
     protected boolean checkMseGain;
     protected GradientDescentOptions gdOptions;
-    protected Integer interceptIndex;
     protected Function costFunction;
     
     /*
@@ -44,13 +41,12 @@ public class GradientDescent {
      */
     public GradientDescent(Double iniTheeta, Dataset dataSet, RVector respVec, GradientDescentOptions gdo) 
             throws Exception {
-        costFunction = new OLSFunction();
+        costFunction = gdo.getCostFunction();
         if (gdo.isInterceptSet()) {
             X = new Dataset(dataSet);
             X.insertFeatureVector(MatrixUtil.getUnitVector(dataSet.numOfRows()), 0);
         }
         else {
-            interceptIndex = -1;
             X = new Dataset(dataSet);
         }
         theeta = new RVector(X.numOfCols());
@@ -59,10 +55,8 @@ public class GradientDescent {
         }
         y = respVec;
         gdOptions = gdo;
-        numOfRows = X.numOfRows();
-        numOfFeatures = X.numOfCols();
         mse = (double) 0;
-        yhat = new RVector(numOfRows);
+        yhat = new RVector(X.numOfRows());
         checkNumOfIter = (gdOptions.getNumOfIter() == -1) ? false : true;
         checkMseGain = (gdOptions.getMseGain() == -1) ? false : true;
         
@@ -78,7 +72,7 @@ public class GradientDescent {
             throw new IOException("Gradient descent must have a defined exit condition. " +
                                   "Provide number of iterations or mse gain");
         Double prevMse = (double) 0;
-        RVector step = new RVector(numOfFeatures);
+        RVector step = new RVector(X.numOfCols());
         int i = 0;
         do {
             yhat = X.multiply(theeta);
@@ -90,7 +84,7 @@ public class GradientDescent {
             }
             // take one step in the direction of the gradient
             step = MatrixUtil.scaleVector(
-                    gdOptions.getLearningRate()/numOfRows, 
+                    gdOptions.getLearningRate()/X.numOfRows(), 
                     costFunction.gradient(X, y, theeta));
             theeta = MatrixUtil.subtract(
                         (gdOptions.getPenalty() == Regularization.L1) ? 
