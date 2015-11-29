@@ -3,11 +3,13 @@ package com.tulc.metrics.util;
 import java.io.IOException;
 import java.util.Vector;
 
+import com.tulc.math.RVector;
+
 public class Metric {
-    public static double MSE(Vector<Double> yActual, Vector<Double> yPred) throws IOException {
+    public static double MSE(RVector yActual, RVector yPred) throws IOException {
         double mse = 0.0;
-        Vector<Double> ya = yActual;
-        Vector<Double> yp = yPred;
+        RVector ya = yActual;
+        RVector yp = yPred;
         
         if (yActual.size() != yPred.size())
             throw new IOException("Vectors are unequal size");
@@ -18,7 +20,7 @@ public class Metric {
         return (mse/ya.size());
     }
     
-    public static double RMSE(Vector<Double> yActual, Vector<Double> yPred) throws IOException {
+    public static double RMSE(RVector yActual, RVector yPred) throws IOException {
         return Math.sqrt(MSE(yActual, yPred));
     }
 }

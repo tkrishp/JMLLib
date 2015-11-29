@@ -11,12 +11,12 @@ import java.util.Vector;
 public class Matrix {
     protected int rows;
     protected int columns;
-    protected Vector<Vector<Double>> matrix;
+    protected Vector<RVector> matrix;
 
     public Matrix(int r, int c) {
         rows = r;
         columns = c;
-        matrix = new Vector<Vector<Double>>(rows);
+        matrix = new Vector<RVector>(rows);
         for (int i = 0; i < rows; i++) {
             matrix.add(initializeRowVector());
         }
@@ -25,7 +25,7 @@ public class Matrix {
     public Matrix(Matrix m) {
         rows = m.numOfRows();
         columns = m.numOfCols();
-        matrix = new Vector<Vector<Double>>(rows);
+        matrix = new Vector<RVector>(rows);
         for (int i = 0; i < rows; i++) {
             matrix.add(initializeRowVector());
         }
@@ -36,8 +36,8 @@ public class Matrix {
         }
     }
 
-    private Vector<Double> initializeRowVector() {
-        Vector<Double> rowVector = new Vector<Double>(columns);
+    private RVector initializeRowVector() {
+        RVector rowVector = new RVector(columns);
         for (int i = 0; i < columns; i++) {
             rowVector.add(i, 0.0);
         }
@@ -73,11 +73,11 @@ public class Matrix {
      * @param i
      * @return
      */
-    public Vector<Double> getRow(int i) {
+    public RVector getRow(int i) {
         return matrix.get(i);
     }
     
-    public void setRow(int i, Vector<Double> v) {
+    public void setRow(int i, RVector v) {
         matrix.set(i, v);
     }
 
@@ -87,8 +87,8 @@ public class Matrix {
      * @param j
      * @return
      */
-    public Vector<Double> getFeatureVector(int j) {
-        Vector<Double> column = new Vector<Double>(rows);
+    public RVector getFeatureVector(int j) {
+        RVector column = new RVector(rows);
         for (int i = 0; i < rows; i++) {
             column.add(matrix.get(i).get(j));
         }
@@ -101,7 +101,7 @@ public class Matrix {
      * @param j
      * @param v
      */
-    public void setFeatureVector(int j, Vector<Double> v) {
+    public void setFeatureVector(int j, RVector v) {
         for (int i = 0; i < rows; i++) {
             insert(v.get(i), i, j);
         }
@@ -200,8 +200,8 @@ public class Matrix {
 
         int outRows = rows;
         int outCols = in.numOfCols();
-        Vector<Double> row = new Vector<Double>(columns);
-        Vector<Double> column = new Vector<Double>(in.numOfRows());
+        RVector row = new RVector(columns);
+        RVector column = new RVector(in.numOfRows());
         Matrix out = new Matrix(outRows, outCols);
         for (int i = 0; i < outRows; i++) {
             row = getRow(i);
@@ -214,7 +214,7 @@ public class Matrix {
         return out;
     }
 
-    public Matrix multiply(Vector<Double> in) throws IOException {
+    public Matrix multiply(RVector in) throws IOException {
         Matrix m = new Matrix(in.size(), 1);
         for (int i = 0; i < m.rows; i++) {
             m.insert(in.get(i), i, 0);

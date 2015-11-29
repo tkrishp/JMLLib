@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import com.tulc.math.Matrix;
 import com.tulc.math.MatrixUtil;
+import com.tulc.math.RVector;
 import com.tulc.optimization.options.Regularization;
 
 /* 
@@ -12,10 +13,10 @@ import com.tulc.optimization.options.Regularization;
  * test more
  */
 public class GradientDescent {
-    protected Vector<Double> theeta;
-    protected Vector<Double> y;
+    protected RVector theeta;
+    protected RVector y;
     protected Matrix X;
-    protected Vector<Double> loss;
+    protected RVector loss;
     protected Integer numOfRows;
     protected Integer numOfFeatures;
     protected Double mse;
@@ -23,11 +24,13 @@ public class GradientDescent {
     protected boolean checkMseGain;
     protected GradientDescentOptions gdOptions;
     protected Integer interceptIndex;
+    protected Function costFunction;
     
     /*
      * For use by derived classes
      */
     public GradientDescent() {
+        costFunction = new OLSFunction();
     }
     
     /**
@@ -41,8 +44,9 @@ public class GradientDescent {
      * iterations is less than this value
      * @throws IOException 
      */
-    public GradientDescent(Double iniTheeta, Matrix dataSet, Vector<Double> respVec, GradientDescentOptions gdo) 
+    public GradientDescent(Double iniTheeta, Matrix dataSet, RVector respVec, GradientDescentOptions gdo) 
             throws IOException {
+        costFunction = new OLSFunction();
         if (gdo.isInterceptSet()) {
             interceptIndex = dataSet.numOfCols();
             X = new Matrix(dataSet.numOfRows(), dataSet.numOfCols() + 1);
@@ -53,7 +57,7 @@ public class GradientDescent {
             interceptIndex = -1;
             X = new Matrix(dataSet);
         }
-        theeta = new Vector<Double>(X.numOfCols());
+        theeta = new RVector(X.numOfCols());
         for (int i = 0; i < theeta.capacity(); i++) {
             theeta.add(iniTheeta);
         }
@@ -73,12 +77,12 @@ public class GradientDescent {
      * Run the gradient descent algorithm till threshold conditions are satisfied
      * @throws IOException
      */
-    public Vector<Double> optimize() throws IOException {
+    public RVector optimize() throws IOException {
         if (! (checkNumOfIter || checkMseGain))
             throw new IOException("Gradient descent must have a defined exit condition. " +
                                   "Provide number of iterations or mse gain");
         Double prevMse = (double) 0;
-        Vector<Double> gradient = new Vector<Double>(numOfFeatures);
+        RVector gradient = new RVector(numOfFeatures);
         int i = 0;
         do {
             computeLossAndMse();
@@ -115,15 +119,15 @@ public class GradientDescent {
      */
     protected void computeLossAndMse() throws IOException {
         Double yhat = new Double(0);
-        loss = new Vector<Double>(numOfRows);
-        Vector<Double> row = new Vector<Double>();
+        loss = new RVector(numOfRows);
+        RVector row = new RVector();
         Double currY = new Double(0);
         if (numOfFeatures != theeta.size())
             throw new IOException("Invalid dimensions for the vector theeta. Number of features: " 
                     + numOfFeatures + ", size of theeta: " + theeta.size());
         for (int n = 0; n < numOfRows; n++) {
             row = X.getRow(n);
-            yhat = MatrixUtil.dotProduct(row, theeta);
+            yhat = costFunction.firstDerivative(row, theeta);
             currY = y.get(n);
             loss.insertElementAt((yhat - currY), n);
             mse += (yhat - currY) * (yhat - currY);
@@ -135,7 +139,7 @@ public class GradientDescent {
      * Returns the vector of theeta
      * @return
      */
-    public Vector<Double> getTheeta() {
-        return (Vector<Double>) theeta;
+    public RVector getTheeta() {
+        return theeta;
     }
 }
