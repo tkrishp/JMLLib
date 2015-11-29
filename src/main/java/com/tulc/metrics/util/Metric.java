@@ -1,8 +1,6 @@
 package com.tulc.metrics.util;
 
 import java.io.IOException;
-import java.util.Vector;
-
 import com.tulc.math.RVector;
 
 public class Metric {
