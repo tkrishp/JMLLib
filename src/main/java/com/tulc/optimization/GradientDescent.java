@@ -46,10 +46,8 @@ public class GradientDescent {
             throws Exception {
         costFunction = new OLSFunction();
         if (gdo.isInterceptSet()) {
-            interceptIndex = dataSet.numOfCols();
-            X = new Matrix(dataSet.numOfRows(), dataSet.numOfCols() + 1);
-            X.copy(dataSet);
-            X.setFeatureVector(interceptIndex, MatrixUtil.getUnitVector(dataSet.numOfRows()));
+            X = new Matrix(dataSet);
+            X.insertFeatureVector(MatrixUtil.getUnitVector(dataSet.numOfRows()), 0);
         }
         else {
             interceptIndex = -1;
@@ -100,6 +98,10 @@ public class GradientDescent {
                             theeta, 
                         step
                     );
+            // regularization is not applied to the intercept term
+            if (gdOptions.isInterceptSet()) {
+                theeta.set(0, MatrixUtil.subtract(theeta, step).get(0));
+            }       
             prevMse = mse;
         } while (
                 (checkNumOfIter ? (i++ < gdOptions.getNumOfIter()) : true) && 
