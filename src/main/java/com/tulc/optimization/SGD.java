@@ -7,7 +7,7 @@ import com.tulc.math.Matrix;
 import com.tulc.math.RVector;
 
 public class SGD extends GradientDescent {
-    public SGD(Double iniTheeta, Matrix inX, Vector<Double> iny, GradientDescentOptions inGDOpt) throws IOException {
+    public SGD(Double iniTheeta, Matrix inX, Vector<Double> iny, GradientDescentOptions inGDOpt) throws Exception {
         super();
         X = new Matrix(1, X.numOfCols());
         y = new RVector(1);

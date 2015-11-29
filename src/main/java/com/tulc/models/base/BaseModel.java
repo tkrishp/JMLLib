@@ -43,7 +43,7 @@ public class BaseModel {
         test_y = y.subList(splitPoint + 1, y.size());
     }
     */
-    public RVector train() throws IOException {
+    public RVector train() throws Exception {
         GradientDescentOptions gdo = new GradientDescentOptions();
         if (optAlg.getOptAlgorithmName().equals(OptAlgorithm.GRADIENT_DESCENT)) {
             gdo.setNumOfIter(1000000);
