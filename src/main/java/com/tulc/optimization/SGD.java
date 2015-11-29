@@ -1,6 +1,5 @@
 package com.tulc.optimization;
 
-import java.io.IOException;
 import java.util.Vector;
 
 import com.tulc.math.Matrix;
