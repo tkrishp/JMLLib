@@ -208,18 +208,17 @@ public class Matrix {
             for (int j = 0; j < outCols; j++) {
                 column = getFeatureVector(j);
                 out.insert(MatrixUtil.dotProduct(row, column), i, j);
-                MatrixUtil.dotProduct(row, column);
             }
         }
         return out;
     }
 
-    public Matrix multiply(RVector in) throws IOException {
+    public RVector multiply(RVector in) throws IOException {
         Matrix m = new Matrix(in.size(), 1);
         for (int i = 0; i < m.rows; i++) {
             m.insert(in.get(i), i, 0);
         }
-        return m;
+        return multiply(m).getFeatureVector(0);
     }
 
     /**

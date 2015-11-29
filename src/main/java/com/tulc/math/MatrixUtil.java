@@ -1,7 +1,6 @@
 package com.tulc.math;
 
 import java.io.IOException;
-import java.util.Vector;
 
 public class MatrixUtil {
     public static Double dotProduct(RVector a, RVector b) throws IOException {
