@@ -1,7 +1,9 @@
-package com.tulc.math;
+package com.tulc.data;
 
 import java.io.IOException;
 import java.util.Vector;
+
+import com.tulc.math.RVector;
 
 /**
  * @author Tulasi Paradarami
