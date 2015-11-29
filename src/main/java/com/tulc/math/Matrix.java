@@ -288,6 +288,26 @@ public class Matrix {
             }
         }
     }
+    
+    /**
+     * Method to insert a new feature vector at the specified location
+     * All feature vectors following the index are pushed by one location
+     * @param fv Feature vector to be inserted at index i
+     * @param i index of the location where feature vector will be inserted
+     */
+    public void insertFeatureVector(RVector fv, int ind) {
+        int cols = columns + 1;
+        Matrix newMatrix = new Matrix(rows, cols);
+        for (int j = 0; j < cols; j++) {
+            if (j == ind) {
+                newMatrix.setFeatureVector(j, fv);
+            }
+            else {
+                newMatrix.setFeatureVector(j, getFeatureVector(j));
+            }
+        }
+        matrix = newMatrix.matrix;
+    }
 
     /**
      * true if matrices are equal
