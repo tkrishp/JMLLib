@@ -35,6 +35,17 @@ public class MatrixUtil {
         return ret;
     }
     
+    public static RVector add(RVector a, RVector b) throws IOException {
+        if (a.capacity() != b.capacity()) {
+            throw new IOException("Cannot perform element-wise subtraction on vectors of different sizes");
+        }
+        RVector ret = new RVector(a.capacity());
+        for (int i = 0; i < ret.capacity(); i++) {
+            ret.insertElementAt((a.get(i) + b.get(i)), i);
+        }
+        return ret;
+    }
+    
     public static RVector getUnitVector(int m) {
         RVector uv = new RVector(m);
         for (int i = 0; i < m; i++) {
