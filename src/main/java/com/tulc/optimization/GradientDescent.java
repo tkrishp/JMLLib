@@ -97,6 +97,10 @@ public class GradientDescent {
             else if (gdOptions.getPenalty() == Regularization.L2) {
                 regularizationFac = (gdOptions.getLambda2()/X.numOfRows()) * theeta.pNorm(2);
             }
+            else if (gdOptions.getPenalty() == Regularization.ELASTIC_NET) {
+                regularizationFac = (gdOptions.getLambda1()/X.numOfRows()) * theeta.pNorm(1) + 
+                                    (gdOptions.getLambda2()/X.numOfRows()) * theeta.pNorm(2);
+            }
             // update theeta
             theeta = MatrixUtil.incrElements(MatrixUtil.subtract(theeta, step), regularizationFac);
             // regularization is not applied to the intercept term
