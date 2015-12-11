@@ -8,7 +8,7 @@ import com.tulc.optimization.options.Regularization;
 public class GradientDescentOptions {
     private final double UNDEFINED = -1d;
     private final int DEF_NUM_ITER = 1;
-    private final double DEF_MSE_GAIN = 0.01;
+    private final double DEF_MSE_GAIN = 0.000001;
     private final double DEF_LEARN_RATE = 0.01;
     private final double DEF_THEETA = 0.01;
     private final boolean DEF_INTERCEPT = false;
