@@ -5,6 +5,7 @@ import com.tulc.data.Dataset;
 import com.tulc.math.MatrixUtil;
 import com.tulc.math.RVector;
 import com.tulc.metrics.util.Metric;
+import com.tulc.optimization.options.LearningRate;
 import com.tulc.optimization.options.Regularization;
 
 /* 
@@ -43,7 +44,6 @@ public class GradientDescent {
      * L1: theeta = theeta - step + (lambda/m)*||theeta||
      * L2: theeta = theeta - step + (lambda/m)*||theeta||(2)
      * elastic net: theeta = theeta - step + (lambda1/m)*||theeta|| + (lambda2/m)*||theeta||(2)
-     *
      */
     public GradientDescent(Double iniTheeta, Dataset dataSet, RVector respVec, GradientDescentOptions gdo) 
             throws Exception {
@@ -81,17 +81,14 @@ public class GradientDescent {
         RVector step = new RVector(X.numOfCols());
         int i = 0;
         Double regularizationFac = 0d;
+        Double alpha = 0d;
+        RVector prevTheeta = new RVector(theeta.capacity());
         do {
-            yhat = X.multiply(theeta);
-            mse = Metric.MSE(y, yhat);
-            if (i > 0) {
-                if ((mse - prevMse) < gdOptions.getMseGain()) {
-                    return getTheeta();
-                }
-            }
+            prevTheeta = theeta;
+            prevMse = mse;
             // take one step in the direction of the gradient
             step = MatrixUtil.scaleVector(
-                    gdOptions.getLearningRate()/X.numOfRows(), 
+                    alpha/X.numOfRows(), 
                     costFunction.gradient(X, y, theeta));
             
             if (gdOptions.getPenalty() == Regularization.L1) {
@@ -105,12 +102,27 @@ public class GradientDescent {
             // regularization is not applied to the intercept term
             if (gdOptions.isInterceptSet()) {
                 theeta.set(0, MatrixUtil.subtract(theeta, step).get(0));
-            }       
-            prevMse = mse;
+            }
+            yhat = X.multiply(theeta);
+            mse = Metric.MSE(y, yhat);
+            if (i > 0) {
+                if (gdOptions.getLearningRateType() == LearningRate.ADAPTIVE) {
+                    if (mse < prevMse) {
+                        alpha = 1.05 * alpha;
+                    }
+                    else {
+                        theeta = prevTheeta;
+                        alpha = 0.5 * alpha;
+                    }
+                }
+                else {
+                    alpha = gdOptions.getLearningRate();
+                }
+            }
         } while (
-                (checkNumOfIter ? (i++ < gdOptions.getNumOfIter()) : true) && 
-                (checkMseGain ? ((mse - prevMse) > gdOptions.getMseGain()) : true)
-            );
+            (checkNumOfIter ? (i++ < gdOptions.getNumOfIter()) : true) && 
+            (checkMseGain ? (Math.abs(prevMse - mse) < gdOptions.getMseGain()) : true)
+        );
         return theeta;
     }
 
