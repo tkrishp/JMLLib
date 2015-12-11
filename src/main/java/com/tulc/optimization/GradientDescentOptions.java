@@ -21,7 +21,8 @@ public class GradientDescentOptions {
     private double iniTheeta;
     private boolean intercept;
     private Regularization penalty;
-    private double lambda;
+    private double lambda1;
+    private double lambda2;
     private LearningRate learningRateType;
     private double alpha;
     private Function costFunction;
@@ -33,7 +34,8 @@ public class GradientDescentOptions {
         iniTheeta = DEF_THEETA;
         intercept = DEF_INTERCEPT;
         penalty = DEF_PENALTY;
-        lambda = DEF_LAMBDA;
+        lambda1 = DEF_LAMBDA;
+        lambda2 = DEF_LAMBDA;
         learningRateType = DEF_LEARNING_RATE;
         alpha = DEF_LEARN_RATE;
         costFunction = new OLSFunction();
@@ -87,18 +89,32 @@ public class GradientDescentOptions {
         return intercept;
     }
     
-    public void setRegularizationParam(double d) throws IOException {
+    public void setLambda1(double d) throws IOException {
         if (penalty == Regularization.NONE) {
-            throw new IOException("Regularization penalty must be defined before regularization parameter");
+            throw new IOException("Regularization penalty is undefined");
         }
-        lambda = d;
+        lambda1 = d;
     }
     
-    public double getRegularizationParam() throws IOException {
-        if (lambda == UNDEFINED) {
+    public double getLambda1() throws IOException {
+        if (lambda1 == UNDEFINED) {
             throw new IOException("Regularization parameter is undefined");
         }
-        return lambda;
+        return lambda1;
+    }
+    
+    public void setLambda2(double d) throws IOException {
+        if (penalty != Regularization.ELASTIC_NET) {
+            throw new IOException("Lamdba2 is valid only for ElasticNet regularization");
+        }
+        lambda1 = d;
+    }
+    
+    public double getLambda2() throws IOException {
+        if (lambda2 == UNDEFINED) {
+            throw new IOException("Regularization parameter is undefined");
+        }
+        return lambda2;
     }
     
     public void setLearningRateType(LearningRate lr) {
