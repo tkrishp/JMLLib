@@ -38,6 +38,12 @@ public class GradientDescent {
      * @param mseGain stop condition if the difference between mean squared error (mse) of current and previous 
      * iterations is less than this value
      * @throws Exception 
+     * 
+     * step = (alpla/m) * gradient
+     * L1: theeta = theeta - step + (lambda/m)*||theeta||
+     * L2: theeta = theeta - step + (lambda/m)*||theeta||(2)
+     * elastic net: theeta = theeta - step + (lambda1/m)*||theeta|| + (lambda2/m)*||theeta||(2)
+     *
      */
     public GradientDescent(Double iniTheeta, Dataset dataSet, RVector respVec, GradientDescentOptions gdo) 
             throws Exception {
@@ -74,6 +80,7 @@ public class GradientDescent {
         Double prevMse = (double) 0;
         RVector step = new RVector(X.numOfCols());
         int i = 0;
+        Double regularizationFac = 0d;
         do {
             yhat = X.multiply(theeta);
             mse = Metric.MSE(y, yhat);
@@ -86,12 +93,15 @@ public class GradientDescent {
             step = MatrixUtil.scaleVector(
                     gdOptions.getLearningRate()/X.numOfRows(), 
                     costFunction.gradient(X, y, theeta));
-            theeta = MatrixUtil.subtract(
-                        (gdOptions.getPenalty() == Regularization.L1) ? 
-                            MatrixUtil.scaleVector((1 - (gdOptions.getLearningRate()*gdOptions.getRegularizationParam()/X.numOfRows())), theeta) : 
-                            theeta, 
-                        step
-                    );
+            
+            if (gdOptions.getPenalty() == Regularization.L1) {
+                regularizationFac = (gdOptions.getLambda1()/X.numOfRows()) * theeta.pNorm(1);
+            }
+            else if (gdOptions.getPenalty() == Regularization.L2) {
+                regularizationFac = (gdOptions.getLambda2()/X.numOfRows()) * theeta.pNorm(2);
+            }
+            // update theeta
+            theeta = MatrixUtil.incrElements(MatrixUtil.subtract(theeta, step), regularizationFac);
             // regularization is not applied to the intercept term
             if (gdOptions.isInterceptSet()) {
                 theeta.set(0, MatrixUtil.subtract(theeta, step).get(0));
