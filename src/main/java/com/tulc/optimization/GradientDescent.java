@@ -95,7 +95,7 @@ public class GradientDescent {
                 regularizationFac = (gdOptions.getLambda1()/X.numOfRows()) * theeta.pNorm(1);
             }
             else if (gdOptions.getPenalty() == Regularization.L2) {
-                regularizationFac = (gdOptions.getLambda2()/X.numOfRows()) * theeta.pNorm(2);
+                regularizationFac = (gdOptions.getLambda1()/X.numOfRows()) * theeta.pNorm(2);
             }
             else if (gdOptions.getPenalty() == Regularization.ELASTIC_NET) {
                 regularizationFac = (gdOptions.getLambda1()/X.numOfRows()) * theeta.pNorm(1) + 
