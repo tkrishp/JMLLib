@@ -25,7 +25,17 @@ git clone git@github.com:tkrishp/JMLLib.git
   RVector y = RVector.parser("path to file");
   LinearRegression lr = new LinearRegression(X, y);
   RVector theeta = lr.train();
-  Dataset newX = Dataset.parsert("path to csv");
+  Dataset newX = Dataset.parser("path to csv");
   RVector predictions = lr.predict(newX);
+```
+2. Logistic Regression
+```
+  Dataset X = Dataset.parser("path to csv");
+  RVector y = RVector.parser("path to file");
+  LogisticRegression lr = new LogisticRegression(X, y);
+  RVector theeta = lr.train();
+  Dataset newX = Dataset.parser("path to csv");
+  RVector predictions = lr.predict(newX);
+  RVector class = lr.predictClass(newX);
 ```
 
