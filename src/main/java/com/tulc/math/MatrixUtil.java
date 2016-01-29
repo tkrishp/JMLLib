@@ -69,4 +69,12 @@ public class MatrixUtil {
         }
         return ret;
     }
+    
+    public static RVector powerE(RVector a) {
+        RVector ret = new RVector(a.capacity());
+        for (int i = 0; i < ret.capacity(); i++) {
+            ret.insertElementAt(Math.pow(Math.E, a.get(i)), i);
+        }
+        return ret;
+    }
 }
