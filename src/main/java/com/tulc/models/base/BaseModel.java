@@ -64,11 +64,7 @@ public class BaseModel {
         return theeta;
     }
     
-    public Vector predict(Dataset X) throws IOException {
-        RVector pred_Y = new RVector(X.numOfRows());
-        for(int i = 0; i < X.numOfRows(); i++) {
-            pred_Y.add(i, MatrixUtil.dotProduct(X.getRow(i), theeta));
-        }
-        return pred_Y;
+    public RVector predict(Dataset X) throws IOException {
+        return X.multiply(theeta);
     }
 }
