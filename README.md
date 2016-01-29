@@ -18,3 +18,14 @@ git clone git@github.com:tkrishp/JMLLib.git
 `mvn clean install`
 
 ## Usage
+
+1. Linear Regression
+```
+  Dataset X = Dataset.parser("path to csv");
+  RVector y = RVector.parser("path to file");
+  LinearRegression lr = new LinearRegression(X, y);
+  RVector theeta = lr.train();
+  Dataset newX = Dataset.parsert("path to csv");
+  RVector predictions = lr.predict(newX);
+```
+
