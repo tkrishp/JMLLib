@@ -23,7 +23,7 @@ public class GradientDescent {
     protected boolean checkNumOfIter;
     protected boolean checkMseGain;
     protected GradientDescentOptions gdOptions;
-    protected Function costFunction;
+    protected LossFunction lossFunc;
     
 
     /**
@@ -44,7 +44,7 @@ public class GradientDescent {
      */
     public GradientDescent(Double iniTheeta, Dataset dataSet, RVector respVec, GradientDescentOptions gdo) 
             throws Exception {
-        costFunction = gdo.getCostFunction();
+        lossFunc = gdo.getLossFunction();
         if (gdo.isInterceptSet()) {
             X = new Dataset(dataSet);
             X.insertFeatureVector(MatrixUtil.getUnitVector(dataSet.numOfRows()), 0);
@@ -86,7 +86,7 @@ public class GradientDescent {
             // take one step in the direction of the gradient
             step = MatrixUtil.scaleVector(
                     alpha/X.numOfRows(), 
-                    costFunction.gradient(X, y, theeta));
+                    lossFunc.gradient(X, y, theeta));
             
             if (gdOptions.getPenalty() == Regularization.L1) {
                 regularizationFac = (gdOptions.getLambda1()/X.numOfRows()) * theeta.pNorm(1);

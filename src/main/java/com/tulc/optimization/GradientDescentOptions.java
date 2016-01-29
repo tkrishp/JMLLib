@@ -27,7 +27,7 @@ public class GradientDescentOptions {
     private double lambda2;
     private LearningRate learningRateType;
     private double alpha;
-    private Function costFunction;
+    private LossFunction costFunction;
     
     
     public GradientDescentOptions() {
@@ -127,11 +127,11 @@ public class GradientDescentOptions {
         return learningRateType;
     }
     
-    public Function getCostFunction() {
+    public LossFunction getLossFunction() {
         return costFunction;
     }
     
-    public void setCostFunction(Function f) {
+    public void setLossFunction(LossFunction f) {
         costFunction = f;
     }
 }
