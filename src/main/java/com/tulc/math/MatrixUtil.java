@@ -53,6 +53,14 @@ public class MatrixUtil {
         }
         return ret;
     }
+    
+    public static RVector divElements(double b, RVector a) throws IOException {
+        RVector ret = new RVector(a.capacity());
+        for (int i = 0; i < ret.capacity(); i++) {
+            ret.insertElementAt(b/a.get(i), i);
+        }
+        return ret;
+    }
 
     public static RVector add(RVector a, RVector b) throws IOException {
         if (a.capacity() != b.capacity()) {
