@@ -30,5 +30,5 @@ public class RVector extends Vector<Double> {
             d += Math.pow(this.get(i), p);
         }
         return Math.pow(d, (1/p));
-    }
+    }   
 }
