@@ -1,4 +1,4 @@
-package com.tulc.optimization;
+package com.tulc.optimization.loss;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import com.tulc.metrics.util.Metric;
  * This class has the implementation of the first derivative
  * of OLS
  */
-public class OLSFunction extends Function {
+public class OLSFunction extends LossFunction {
     @Override
     public RVector gradient(Dataset X, RVector y, RVector theeta) throws IOException {
         return X.transpose().multiply(loss);

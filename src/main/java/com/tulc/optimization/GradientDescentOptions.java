@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import com.tulc.optimization.options.LearningRate;
 import com.tulc.optimization.options.Regularization;
+import com.tulc.optimization.loss.OLSFunction;
+import com.tulc.optimization.loss.LossFunction;
 
 public class GradientDescentOptions {
     private final double UNDEFINED = -1d;

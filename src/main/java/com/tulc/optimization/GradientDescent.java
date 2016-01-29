@@ -8,6 +8,8 @@ import com.tulc.metrics.util.Metric;
 import com.tulc.optimization.options.LearningRate;
 import com.tulc.optimization.options.Regularization;
 
+import com.tulc.optimization.loss.LossFunction;
+
 /* 
  * Class that implements GradientDescent
  * test more

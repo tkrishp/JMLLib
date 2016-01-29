@@ -1,4 +1,4 @@
-package com.tulc.optimization;
+package com.tulc.optimization.loss;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import com.tulc.math.RVector;
  * loss. Any class that extends function must implement its first
  * derivative
  */
-public abstract class Function {
+public abstract class LossFunction {
     protected double gradient = 0d;
     protected RVector loss;
     protected double mse = 0d;
