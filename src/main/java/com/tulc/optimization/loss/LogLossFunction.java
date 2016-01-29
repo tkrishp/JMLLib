@@ -8,9 +8,9 @@ import com.tulc.math.RVector;
 import com.tulc.metrics.util.Metric;
 
 /*
- * An implementation of the Ordinary Least Squares Function
+ * An implementation of the Log Loss Function
  * This class has the implementation of the first derivative
- * of OLS
+ * of loss function used in logistic regression
  */
 public class LogLossFunction extends LossFunction {
     @Override
