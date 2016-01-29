@@ -23,12 +23,7 @@ public class GradientDescent {
     protected GradientDescentOptions gdOptions;
     protected Function costFunction;
     
-    /*
-     * For use by derived classes
-     */
-    public GradientDescent() {
-    }
-    
+
     /**
      * Initializes gradient descent algorithm with input parameters
      * 

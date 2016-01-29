@@ -1,13 +1,12 @@
 package com.tulc.optimization;
 
-import java.util.Vector;
-
 import com.tulc.data.Dataset;
 import com.tulc.math.RVector;
 
 public class SGD extends GradientDescent {
-    public SGD(Double iniTheeta, Dataset inX, Vector<Double> iny, GradientDescentOptions inGDOpt) throws Exception {
-        super();
+    public SGD(Double iniTheeta, Dataset inX, RVector iny, GradientDescentOptions inGDOpt) throws Exception {
+        super(iniTheeta, inX, iny, inGDOpt);
+        gdOptions.setNumOfIter(1);
         X = new Dataset(1, X.numOfCols());
         y = new RVector(1);
         for (int i = 0; i < inX.numOfRows(); i++) {
