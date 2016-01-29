@@ -28,6 +28,7 @@ git clone git@github.com:tkrishp/JMLLib.git
   Dataset newX = Dataset.parser("path to csv");
   RVector predictions = lr.predict(newX);
 ```
+
 2. Logistic Regression
 ```
   Dataset X = Dataset.parser("path to csv");
@@ -36,6 +37,6 @@ git clone git@github.com:tkrishp/JMLLib.git
   RVector theeta = lr.train();
   Dataset newX = Dataset.parser("path to csv");
   RVector predictions = lr.predict(newX);
-  RVector class = lr.predictClass(newX);
+  RVector class = lr.predictClass(newX, 0.5);
 ```
 
