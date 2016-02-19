@@ -1,5 +1,6 @@
 package com.tulc.models.classification;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
@@ -20,16 +21,45 @@ import com.tulc.math.RVector;
  * 
  */
 public class NaiveBayesClassifier {
-    protected ArrayList<Vector<Integer>> X;
-    protected ArrayList<Integer> y;
+    protected Vector<Vector<Integer>> X;
+    protected Vector<Integer> y;
     protected RVector theeta;
-    protected ArrayList<Vector<Integer>> train_X;
-    protected ArrayList<Vector<Integer>> test_X;
-    protected ArrayList<Integer> train_y;
-    protected ArrayList<Integer> test_y;
-    private HashMap<Integer, Double> classProb;
+    protected Vector<Vector<Integer>> train_X;
+    protected Vector<Vector<Integer>> test_X;
+    protected Vector<Integer> train_y;
+    protected Vector<Integer> test_y;
+    private HashMap<Integer, Double> classCount;
     
-    public NaiveBayesClassifier(ArrayList<Vector<Integer>> x, ArrayList<Integer> y) {
+    public class FeatureResponseProbability {
+    	Integer yValue;
+    	Integer xIndex;
+    	Integer xValue;
+    	
+    	public FeatureResponseProbability(Integer y, Integer idx, Integer x) {
+    		this.yValue = y;
+    		this.xIndex = idx;
+    		this.xValue = x;
+    	}
+    	
+    	public boolean equals(FeatureResponseProbability a) {
+    		return this.yValue == a.yValue && this.xIndex == a.xIndex && this.xValue == a.xValue;
+    	}
+    	
+    	public int hashCode() {
+    		int hash = 1;
+            hash = hash * 31 + this.yValue;
+            hash = hash * 31 + this.xIndex;
+            hash = hash * 31 + this.xValue;
+            return hash;
+    	}
+    	
+    	public String toString() {
+    		return yValue + "," + xIndex + "," + xValue;
+    	}
+    }
+    private HashMap<FeatureResponseProbability, Integer> featureRespProb;
+    
+    public NaiveBayesClassifier(Vector<Vector<Integer>> x, Vector<Integer> y) {
         this.X = x;
         this.y = y;
         this.train_X = x;
@@ -37,5 +67,16 @@ public class NaiveBayesClassifier {
         this.test_X = x;
         this.test_y = y;
         this.classProb = new HashMap<Integer, Double>();
+    }
+    
+    public void computeProb(Vector<Integer> feature, Integer featureIndex, Vector<Integer> y) throws IOException {
+    	if (feature.size() != y.size())
+    		throw new IOException("Feature vector at index [" + featureIndex + "] and y vectors are not of same size");
+    	
+    	for(int i = 0; i < feature.size(); i++) {
+    		
+    	}
+    	
+    	return;
     }
 }
