@@ -1,5 +1,7 @@
 package com.tulc.models.classification;
 
+import java.util.HashMap;
+
 import com.tulc.data.Dataset;
 import com.tulc.math.RVector;
 
@@ -23,6 +25,7 @@ public class NaiveBayesClassifier {
     protected Dataset test_X;
     protected RVector train_y;
     protected RVector test_y;
+    private HashMap<Integer, Double> classProb;
     
     public NaiveBayesClassifier(Dataset x, RVector y) {
         this.X = x;
@@ -31,5 +34,12 @@ public class NaiveBayesClassifier {
         this.train_y = y;
         this.test_X = x;
         this.test_y = y;
+        this.classProb = new HashMap<Integer, Double>();
     }
+    
+    public void train() {
+    	
+    	return;
+    }
+     
 }
