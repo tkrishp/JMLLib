@@ -31,14 +31,14 @@ public class NaiveBayesClassifier {
     private HashMap<Integer, Double> classCount;
     
     public class FeatureResponseProbability {
-    	Integer yValue;
     	Integer xIndex;
     	Integer xValue;
+    	Integer yValue;
     	
     	public FeatureResponseProbability(Integer y, Integer idx, Integer x) {
-    		this.yValue = y;
     		this.xIndex = idx;
     		this.xValue = x;
+    		this.yValue = y;
     	}
     	
     	public boolean equals(FeatureResponseProbability a) {
@@ -47,17 +47,18 @@ public class NaiveBayesClassifier {
     	
     	public int hashCode() {
     		int hash = 1;
-            hash = hash * 31 + this.yValue;
             hash = hash * 31 + this.xIndex;
             hash = hash * 31 + this.xValue;
+            hash = hash * 31 + this.yValue;
             return hash;
     	}
     	
     	public String toString() {
-    		return yValue + "," + xIndex + "," + xValue;
+    		return xIndex + "," + xValue + "," + yValue;
     	}
     }
-    private HashMap<FeatureResponseProbability, Integer> featureRespProb;
+    private HashMap<FeatureResponseProbability, Integer> featureRespCounts;
+    private HashMap<FeatureResponseProbability, Double> featureRespProb;
     
     public NaiveBayesClassifier(Vector<Vector<Integer>> x, Vector<Integer> y) {
         this.X = x;
