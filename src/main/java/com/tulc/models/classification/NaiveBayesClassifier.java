@@ -29,15 +29,15 @@ public class NaiveBayesClassifier {
     protected Vector<Integer> train_y;
     protected Vector<Integer> test_y;
     
-    class FeatureResponseMetrics {
+    class FeatureResponseValues {
     	Integer xIndex;
     	Integer xValue;
     	Integer yValue;
     	
-    	FeatureResponseMetrics() {
+    	FeatureResponseValues() {
     	}
     	
-    	FeatureResponseMetrics(Integer idx, Integer x, Integer y) {
+    	FeatureResponseValues(Integer idx, Integer x, Integer y) {
     		this.xIndex = idx;
     		this.xValue = x;
     		this.yValue = y;
@@ -49,7 +49,7 @@ public class NaiveBayesClassifier {
     		this.yValue = y;
     	}
     	
-    	public boolean equals(FeatureResponseMetrics a) {
+    	public boolean equals(FeatureResponseValues a) {
     		return this.yValue == a.yValue && this.xIndex == a.xIndex && this.xValue == a.xValue;
     	}
     	
@@ -77,8 +77,8 @@ public class NaiveBayesClassifier {
     		return xIndex + "," + xValue + "," + yValue;
     	}
     }
-    private HashMap<FeatureResponseMetrics, Integer> featureRespCounts;
-    private HashMap<FeatureResponseMetrics, Double> featureRespProb;
+    private HashMap<FeatureResponseValues, Integer> featureRespCounts;
+    private HashMap<FeatureResponseValues, Double> featureRespProb;
     private HashMap<Integer, Integer> responseVecCounts;
     
     public NaiveBayesClassifier(Vector<Vector<Integer>> x, Vector<Integer> y) {
@@ -88,8 +88,8 @@ public class NaiveBayesClassifier {
         this.train_y = y;
         this.test_X = x;
         this.test_y = y;
-        this.featureRespCounts = new HashMap<FeatureResponseMetrics, Integer>();
-        this.featureRespProb= new HashMap<FeatureResponseMetrics, Double>();
+        this.featureRespCounts = new HashMap<FeatureResponseValues, Integer>();
+        this.featureRespProb= new HashMap<FeatureResponseValues, Double>();
         this.responseVecCounts = new HashMap<Integer, Integer>();
     }
     
@@ -112,7 +112,7 @@ public class NaiveBayesClassifier {
     public void computeProb(Vector<Integer> feature, Integer featureIndex, Vector<Integer> y) throws IOException {
     	if (feature.size() != y.size())
     		throw new IOException("Feature vector at index [" + featureIndex + "] and y vectors are not of same size");
-    	FeatureResponseMetrics inter = new FeatureResponseMetrics();
+    	FeatureResponseValues inter = new FeatureResponseValues();
     	int newCount = 0;
     	for(int i = 0; i < feature.size(); i++) {
     		inter.initialize(featureIndex, feature.get(i), y.get(i));
@@ -126,10 +126,30 @@ public class NaiveBayesClassifier {
     		newCount = 0;
     	}
     	
-    	for (FeatureResponseMetrics key : featureRespCounts.keySet()) {
+    	for (FeatureResponseValues key : featureRespCounts.keySet()) {
     		featureRespProb.put(key, featureRespCounts.get(key) * 1.0/responseVecCounts.get(key.getYValue()));
     	}
     	
     	return;
+    }
+    
+    /*
+     * Trains the model on train_X dataset and computes the conditional probabilities
+     */
+    
+    public void train() throws IOException {
+    	for(int i = 0; i < train_X.size(); i++) {
+    		computeProb(train_X.get(i), i, train_y);
+    	}
+    }
+    
+    public Double predict(Vector<Integer> row) {
+    	FeatureResponseValues v = new FeatureResponseValues();
+    	Double retProb = 1.0d;
+    	for (int i = 0; i < row.size(); i++) {
+    		v.initialize(i, row.get(i), 1);
+    		retProb *= featureRespProb.get(v);
+    	}
+    	return retProb;
     }
 }
