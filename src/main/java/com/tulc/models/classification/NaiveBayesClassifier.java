@@ -61,12 +61,25 @@ public class NaiveBayesClassifier {
             return hash;
     	}
     	
+    	public Integer getXIndex() {
+    		return xIndex;
+    	}
+    	
+    	public Integer getXValue() {
+    		return xValue;
+    	}
+    	
+    	public Integer getYValue() {
+    		return yValue;
+    	}
+    	
     	public String toString() {
     		return xIndex + "," + xValue + "," + yValue;
     	}
     }
     private HashMap<FeatureResponseMetrics, Integer> featureRespCounts;
     private HashMap<FeatureResponseMetrics, Double> featureRespProb;
+    private HashMap<Integer, Integer> responseVecCounts;
     
     public NaiveBayesClassifier(Vector<Vector<Integer>> x, Vector<Integer> y) {
         this.X = x;
@@ -77,6 +90,19 @@ public class NaiveBayesClassifier {
         this.test_y = y;
         this.featureRespCounts = new HashMap<FeatureResponseMetrics, Integer>();
         this.featureRespProb= new HashMap<FeatureResponseMetrics, Double>();
+        this.responseVecCounts = new HashMap<Integer, Integer>();
+    }
+    
+    public void computeResponseVecCounts(Vector<Integer> y) {
+    	int newCount = 0;
+    	int key = 0;
+    	for(int i = 0; i < y.size(); i++) {
+    		key = y.get(i);
+    		if (responseVecCounts.containsKey(key)) {
+    			newCount = responseVecCounts.get(key) + 1;
+    			responseVecCounts.put(key, newCount);
+    		}
+    	}
     }
     
     /*
@@ -97,7 +123,13 @@ public class NaiveBayesClassifier {
     		else {
     			featureRespCounts.put(inter, 1);
     		}
+    		newCount = 0;
     	}
+    	
+    	for (FeatureResponseMetrics key : featureRespCounts.keySet()) {
+    		featureRespProb.put(key, featureRespCounts.get(key) * 1.0/responseVecCounts.get(key.getYValue()));
+    	}
+    	
     	return;
     }
 }
