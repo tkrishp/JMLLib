@@ -28,20 +28,28 @@ public class NaiveBayesClassifier {
     protected Vector<Vector<Integer>> test_X;
     protected Vector<Integer> train_y;
     protected Vector<Integer> test_y;
-    private HashMap<Integer, Double> classCount;
     
-    public class FeatureResponseProbability {
+    class FeatureResponseMetrics {
     	Integer xIndex;
     	Integer xValue;
     	Integer yValue;
     	
-    	public FeatureResponseProbability(Integer y, Integer idx, Integer x) {
+    	FeatureResponseMetrics() {
+    	}
+    	
+    	FeatureResponseMetrics(Integer idx, Integer x, Integer y) {
     		this.xIndex = idx;
     		this.xValue = x;
     		this.yValue = y;
     	}
     	
-    	public boolean equals(FeatureResponseProbability a) {
+    	public void initialize(Integer idx, Integer x, Integer y) {
+    		this.xIndex = idx;
+    		this.xValue = x;
+    		this.yValue = y;
+    	}
+    	
+    	public boolean equals(FeatureResponseMetrics a) {
     		return this.yValue == a.yValue && this.xIndex == a.xIndex && this.xValue == a.xValue;
     	}
     	
@@ -57,8 +65,8 @@ public class NaiveBayesClassifier {
     		return xIndex + "," + xValue + "," + yValue;
     	}
     }
-    private HashMap<FeatureResponseProbability, Integer> featureRespCounts;
-    private HashMap<FeatureResponseProbability, Double> featureRespProb;
+    private HashMap<FeatureResponseMetrics, Integer> featureRespCounts;
+    private HashMap<FeatureResponseMetrics, Double> featureRespProb;
     
     public NaiveBayesClassifier(Vector<Vector<Integer>> x, Vector<Integer> y) {
         this.X = x;
@@ -67,17 +75,29 @@ public class NaiveBayesClassifier {
         this.train_y = y;
         this.test_X = x;
         this.test_y = y;
-        this.classProb = new HashMap<Integer, Double>();
+        this.featureRespCounts = new HashMap<FeatureResponseMetrics, Integer>();
+        this.featureRespProb= new HashMap<FeatureResponseMetrics, Double>();
     }
     
+    /*
+     * Convert the input dataset into a hashmap of y-value, x-value and probability
+     * This exercise is performed for each feature
+     */
     public void computeProb(Vector<Integer> feature, Integer featureIndex, Vector<Integer> y) throws IOException {
     	if (feature.size() != y.size())
     		throw new IOException("Feature vector at index [" + featureIndex + "] and y vectors are not of same size");
-    	
+    	FeatureResponseMetrics inter = new FeatureResponseMetrics();
+    	int newCount = 0;
     	for(int i = 0; i < feature.size(); i++) {
-    		
+    		inter.initialize(featureIndex, feature.get(i), y.get(i));
+    		if (featureRespCounts.containsKey(inter)) {
+    			newCount = featureRespCounts.get(inter) + 1;
+    			featureRespCounts.put(inter, newCount);
+    		}
+    		else {
+    			featureRespCounts.put(inter, 1);
+    		}
     	}
-    	
     	return;
     }
 }
