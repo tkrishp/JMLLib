@@ -3,6 +3,18 @@ package com.tulc.models.classification;
 import com.tulc.data.Dataset;
 import com.tulc.math.RVector;
 
+/**
+ * @author tulasi
+ * 
+ * Model for Naive Bayes Classifier that estimates the posterior probability of a class using
+ * Naive Bayes methodology by considering all features to be mutually independent
+ * P(y = class(k) | X1, X2, ... , Xp) = [P(y=1)/P(X1, X2, ... , Xp)] * [P(X1 | y = class(k)) * P(X2 | y=1) * ... * P(Xp | y=1)]
+ *
+ * Dataset is a set of features with categorical variables. As part of model training, probability
+ * of each feature-value combination w.r.t to y-class is computed. These trained probabilities are
+ * used in predictions.
+ * 
+ */
 public class NaiveBayesClassifier {
     protected Dataset X;
     protected RVector y;
